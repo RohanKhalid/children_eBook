@@ -1,16 +1,60 @@
+import 'package:audioplayers/audioplayers.dart';
 import 'package:ebook/screens/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-class SceneendD extends StatelessWidget {
-  const SceneendD({super.key});
+class SceneendD extends StatefulWidget {
+  const SceneendD({Key? key}) : super(key: key);
+
+  @override
+  _SceneendDState createState() => _SceneendDState();
+}
+
+class _SceneendDState extends State<SceneendD> {
+  late AudioPlayer
+      backgroundAudioPlayer; // Audio player for the background track
+
+  @override
+  void initState() {
+    SystemChrome.setPreferredOrientations([DeviceOrientation.landscapeLeft]);
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
+        overlays: [SystemUiOverlay.bottom]);
+    super.initState();
+
+    // Initialize the audio players
+
+    backgroundAudioPlayer = AudioPlayer();
+
+    // Play the background audio track and set it to loop continuously
+    playBackgroundAudio('background_audio/scene_end.mp3');
+    backgroundAudioPlayer.setReleaseMode(ReleaseMode.loop);
+  }
+
+  // Function to play the background audio track
+  Future<void> playBackgroundAudio(String backgroundAudioPath) async {
+    await backgroundAudioPlayer.play(
+      AssetSource(backgroundAudioPath),
+    );
+  }
+
+  // Function to stop the background audio track
+  Future<void> stopBackgroundAudio() async {
+    await backgroundAudioPlayer.stop();
+  }
+
+  @override
+  void dispose() {
+    // Dispose of the audioPlayer when the widget is disposed
+
+    backgroundAudioPlayer.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-    // Force landscape orientation
-    SystemChrome.setPreferredOrientations([DeviceOrientation.landscapeLeft]);
     double screenHeight = MediaQuery.of(context).size.height;
     // double screenWidth = MediaQuery.of(context).size.width;
+
     return Scaffold(
       body: Stack(
         children: [
@@ -26,6 +70,7 @@ class SceneendD extends StatelessWidget {
             left: screenHeight * 0.725,
             child: GestureDetector(
               onTap: () {
+                stopBackgroundAudio();
                 Navigator.of(context).push(
                   MaterialPageRoute(
                     builder: (context) => const HomeScreen(),

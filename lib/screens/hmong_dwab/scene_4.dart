@@ -18,33 +18,54 @@ class SceneD4 extends StatefulWidget {
 
 class _SceneD4State extends State<SceneD4> {
   late AudioPlayer audioPlayer; // Create an instance of AudioPlayer
+  late AudioPlayer
+      backgroundAudioPlayer; // Audio player for the background track
 
   @override
   void initState() {
     super.initState();
-    // Initialize the audioPlayer
-    audioPlayer = AudioPlayer();
 
-    // Play the audio file when the widget is initialized
-    playAudio();
+    // Initialize the audio players
+    audioPlayer = AudioPlayer();
+    backgroundAudioPlayer = AudioPlayer();
+
+    // Play the current audio track
+    playAudio('hmong_dwab_audio/scene_4.m4a');
+
+    // Play the background audio track and set it to loop continuously
+    playBackgroundAudio('background_audio/scene_4.mp3');
+    backgroundAudioPlayer.setReleaseMode(ReleaseMode.loop);
   }
 
-  // Function to play the audio
-  Future<void> playAudio() async {
+  // Function to play the current audio track
+  Future<void> playAudio(String audioPath) async {
     await audioPlayer.play(
-      AssetSource('hmong_dwab_audio/scene_4.m4a'),
+      AssetSource(audioPath),
     );
   }
 
-  // Function to stop audio
+  // Function to play the background audio track
+  Future<void> playBackgroundAudio(String backgroundAudioPath) async {
+    await backgroundAudioPlayer.play(
+      AssetSource(backgroundAudioPath),
+    );
+  }
+
+  // Function to stop the current audio track
   Future<void> stopAudio() async {
     await audioPlayer.stop();
+  }
+
+  // Function to stop the background audio track
+  Future<void> stopBackgroundAudio() async {
+    await backgroundAudioPlayer.stop();
   }
 
   @override
   void dispose() {
     // Dispose of the audioPlayer when the widget is disposed
     audioPlayer.dispose();
+    backgroundAudioPlayer.dispose();
     super.dispose();
   }
 
@@ -79,6 +100,7 @@ class _SceneD4State extends State<SceneD4> {
             child: GestureDetector(
               onTap: () {
                 stopAudio();
+                stopBackgroundAudio(); // Stop the background audio track
                 Navigator.of(context).push(
                   MaterialPageRoute(
                     builder: (context) => const HomeScreen(),
@@ -98,6 +120,7 @@ class _SceneD4State extends State<SceneD4> {
             child: GestureDetector(
               onTap: () {
                 stopAudio();
+                stopBackgroundAudio(); // Stop the background audio track
                 Navigator.of(context).push(
                   SlideRightPageRoute(
                     page: const SceneD5(),
@@ -117,6 +140,7 @@ class _SceneD4State extends State<SceneD4> {
             child: GestureDetector(
               onTap: () {
                 stopAudio();
+                stopBackgroundAudio(); // Stop the background audio track
                 Navigator.of(context).push(
                   SlideRightPageRouteB(
                     page: const SceneD3(),

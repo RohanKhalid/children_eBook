@@ -1,10 +1,8 @@
 import 'package:ebook/screens/home_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 void main() {
-  // Hide the status bar and make the app take up the whole screen
-  SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge, overlays: []);
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(const MyApp());
 }
 

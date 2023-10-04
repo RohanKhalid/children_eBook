@@ -1,13 +1,56 @@
+import 'package:audioplayers/audioplayers.dart';
 import 'package:ebook/widgets/custom_popup.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart'; // Import for SystemChrome
 
-class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key});
+class HomeScreen extends StatefulWidget {
+  const HomeScreen({Key? key}) : super(key: key);
+
+  @override
+  _HomeScreenState createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  late AudioPlayer
+      backgroundAudioPlayer; // Audio player for the background track
+
+  @override
+  void initState() {
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
+        overlays: [SystemUiOverlay.bottom]);
+    super.initState();
+
+    // Initialize the audio players
+
+    backgroundAudioPlayer = AudioPlayer();
+
+    // Play the background audio track and set it to loop continuously
+    playBackgroundAudio('background_audio/scene_intro.mp3');
+    backgroundAudioPlayer.setReleaseMode(ReleaseMode.loop);
+  }
+
+  // Function to play the background audio track
+  Future<void> playBackgroundAudio(String backgroundAudioPath) async {
+    await backgroundAudioPlayer.play(
+      AssetSource(backgroundAudioPath),
+    );
+  }
+
+  // Function to stop the background audio track
+  Future<void> stopBackgroundAudio() async {
+    await backgroundAudioPlayer.stop();
+  }
+
+  @override
+  void dispose() {
+    // Dispose of the audioPlayer when the widget is disposed
+
+    backgroundAudioPlayer.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-    // Force landscape orientation
     SystemChrome.setPreferredOrientations([DeviceOrientation.landscapeLeft]);
     // Get the device's screen size
     double screenHeight = MediaQuery.of(context).size.height;
@@ -24,10 +67,11 @@ class HomeScreen extends StatelessWidget {
             fit: BoxFit.cover,
           ),
           Positioned(
-            bottom: screenHeight * 0.04,
-            left: screenHeight * 0.79,
+            bottom: screenHeight * 0.06,
+            left: screenHeight * 0.725,
             child: GestureDetector(
               onTap: () {
+                stopBackgroundAudio();
                 showDialog(
                   context: context,
                   builder: (BuildContext context) {
@@ -36,9 +80,9 @@ class HomeScreen extends StatelessWidget {
                 );
               },
               child: Container(
-                width: screenHeight * 0.6, // Adjust width as needed
+                width: screenHeight * 0.5, // Adjust width as needed
                 height: screenHeight * 0.2, // Adjust height as needed
-                color: Colors.white, // Make the container transparent
+                color: Colors.transparent, // Make the container transparent
               ),
             ),
           ),

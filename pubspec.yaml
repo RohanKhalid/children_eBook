@@ -64,6 +64,7 @@ flutter:
     - assets/hmong_dwab/
     - assets/hmong_ntsuab_audio/
     - assets/hmong_dwab_audio/
+    - assets/background_audio/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
