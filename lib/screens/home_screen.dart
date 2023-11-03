@@ -11,42 +11,52 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  late AudioPlayer
-      backgroundAudioPlayer; // Audio player for the background track
+  bool isPlaying = false;
+  bool isGifPlaying = true;
+
+  AudioPlayer backgroundAudioPlayer = AudioPlayer();
 
   @override
   void initState() {
-    SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
-        overlays: [SystemUiOverlay.bottom]);
+    // SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: [SystemUiOverlay.bottom]);
     super.initState();
-
-    // Initialize the audio players
-
-    backgroundAudioPlayer = AudioPlayer();
-
-    // Play the background audio track and set it to loop continuously
     playBackgroundAudio('background_audio/scene_intro.mp3');
-    backgroundAudioPlayer.setReleaseMode(ReleaseMode.loop);
+    // backgroundAudioPlayer.setReleaseMode(ReleaseMode.loop);
   }
 
   // Function to play the background audio track
-  Future<void> playBackgroundAudio(String backgroundAudioPath) async {
-    await backgroundAudioPlayer.play(
-      AssetSource(backgroundAudioPath),
-    );
+  playBackgroundAudio(String backgroundAudioPath) {
+    if (isPlaying) {
+      stopBackgroundAudio();
+      setState(() {
+        isPlaying = false;
+      });
+    } else {
+      backgroundAudioPlayer.play(AssetSource(backgroundAudioPath));
+      setState(() {
+        isPlaying = true;
+      });
+    }
   }
 
   // Function to stop the background audio track
-  Future<void> stopBackgroundAudio() async {
-    await backgroundAudioPlayer.stop();
+  stopBackgroundAudio() {
+    backgroundAudioPlayer.stop();
+    setState(() {
+      isPlaying = false;
+    });
   }
 
   @override
   void dispose() {
-    // Dispose of the audioPlayer when the widget is disposed
-
     backgroundAudioPlayer.dispose();
     super.dispose();
+  }
+
+  toggleGif() {
+    setState(() {
+      isGifPlaying = !isGifPlaying;
+    });
   }
 
   @override
@@ -54,39 +64,93 @@ class _HomeScreenState extends State<HomeScreen> {
     SystemChrome.setPreferredOrientations([DeviceOrientation.landscapeLeft]);
     // Get the device's screen size
     double screenHeight = MediaQuery.of(context).size.height;
+    double screenWidth = MediaQuery.of(context).size.width;
     // double screenWidth = MediaQuery.of(context).size.width;
 
     return Scaffold(
-      body: Stack(
-        children: [
-          // Background Image
-          Image.asset(
-            'assets/scene_title 1.png',
-            width: double.infinity,
-            height: double.infinity,
-            fit: BoxFit.cover,
-          ),
-          Positioned(
-            bottom: screenHeight * 0.06,
-            left: screenHeight * 0.725,
-            child: GestureDetector(
-              onTap: () {
-                stopBackgroundAudio();
-                showDialog(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return const CustomPopup(); // Show the custom popup
-                  },
-                );
-              },
-              child: Container(
-                width: screenHeight * 0.5, // Adjust width as needed
-                height: screenHeight * 0.2, // Adjust height as needed
-                color: Colors.transparent, // Make the container transparent
+      body: GestureDetector(
+        onTap: () {
+          setState(() {
+            playBackgroundAudio('background_audio/scene_intro.mp3');
+            toggleGif();
+          });
+        },
+        child: Stack(
+          children: [
+            // Background Image
+            Image.asset(
+              'assets/home_bg.png',
+              width: double.infinity,
+              height: double.infinity,
+              fit: BoxFit.cover,
+            ),
+
+            Positioned(
+              bottom: screenHeight * 0.06,
+              left: screenHeight * 0.725,
+              child: GestureDetector(
+                onTap: () {
+                  setState(() {
+                    stopBackgroundAudio();
+                  });
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return const CustomPopup(); // Show the custom popup
+                    },
+                  ).then((_) =>
+                      playBackgroundAudio('background_audio/scene_intro.mp3'));
+                },
+                child: Container(
+                  width: screenHeight * 0.5, // Adjust width as needed
+                  height: screenHeight * 0.2, // Adjust height as needed
+                  color: Colors.transparent, // Make the container transparent
+                ),
               ),
             ),
-          ),
-        ],
+            Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(left: 25.0),
+                  child: Image.asset(
+                    'assets/hmong_dwab_gif/hen.gif',
+                    width: 80,
+                    height: 80,
+                  ),
+                ),
+              ],
+            ),
+            Positioned(
+              bottom: screenHeight * 0.17,
+              right: screenHeight * 0.300,
+              child: isGifPlaying
+                  ? Transform(
+                      alignment: Alignment.center,
+                      transform: Matrix4.rotationY(3.141),
+                      child: Image.asset(
+                        'assets/hmong_dwab_gif/bird.gif',
+                        width: 200,
+                        height: 100,
+                      ),
+                    )
+                  : Image.asset(
+                      'assets/hmong_dwab_gif/bird_icon.png',
+                      width: 200,
+                      height: 100,
+                    ),
+            ),
+            Positioned(
+              bottom: screenHeight * 0.06,
+              right: screenHeight * 0.200,
+              child: Image.asset(
+                'assets/hmong_dwab_gif/girl.gif',
+                width: 100,
+                height: 100,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

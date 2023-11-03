@@ -64,8 +64,7 @@ class _CustomPopupState extends State<CustomPopup> {
                             height: 35,
                             width: 155,
                             decoration: BoxDecoration(
-                              color: const Color(
-                                  0xFFED82FE), // Use the color ED82FE
+                              color: const Color(0xFFED82FE), // Use the color ED82FE
                               borderRadius: BorderRadius.circular(
                                   6), // Define the border radius
                             ),
@@ -79,6 +78,7 @@ class _CustomPopupState extends State<CustomPopup> {
                             // Icon color (white)
                           ),
                           onPressed: () {
+
                             Navigator.of(context).pop();
                           },
                         ),

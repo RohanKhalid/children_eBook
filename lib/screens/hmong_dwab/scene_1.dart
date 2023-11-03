@@ -74,8 +74,26 @@ class _SceneD1State extends State<SceneD1> {
   Widget build(BuildContext context) {
     SystemChrome.setPreferredOrientations([DeviceOrientation.landscapeLeft]);
     double screenHeight = MediaQuery.of(context).size.height;
-
+    double screenWidth = MediaQuery.of(context).size.width;
     return Scaffold(
+      extendBodyBehindAppBar: true,
+      appBar: AppBar(
+        forceMaterialTransparency: true,
+        centerTitle: true,
+        title: Padding(
+          padding: const EdgeInsets.only(top: 12.0),
+          child: Container(
+            alignment: Alignment.center,
+            decoration: BoxDecoration(
+              border: Border.all(width: 1, color: Colors.black),
+              color: Colors.white,
+            ),
+            height: 50,
+            width: screenWidth * 0.8,
+            child: Text('ha ha ha ha ha ha ha',style: TextStyle(color: Colors.black),),
+          ),
+        ),
+      ),
       body: Stack(
         children: [
           // Background Image

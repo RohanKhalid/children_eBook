@@ -60,8 +60,10 @@ flutter:
   assets:
     - assets/alert_box.png
     - assets/scene_title 1.png
+    - assets/home_bg.png
     - assets/hmong_ntsuab/
     - assets/hmong_dwab/
+    - assets/hmong_dwab_gif/
     - assets/hmong_ntsuab_audio/
     - assets/hmong_dwab_audio/
     - assets/background_audio/
