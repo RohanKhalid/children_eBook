@@ -85,29 +85,7 @@ class _HomeScreenState extends State<HomeScreen> {
               fit: BoxFit.cover,
             ),
 
-            Positioned(
-              bottom: screenHeight * 0.06,
-              left: screenHeight * 0.725,
-              child: GestureDetector(
-                onTap: () {
-                  setState(() {
-                    stopBackgroundAudio();
-                  });
-                  showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return const CustomPopup(); // Show the custom popup
-                    },
-                  ).then((_) =>
-                      playBackgroundAudio('background_audio/scene_intro.mp3'));
-                },
-                child: Container(
-                  width: screenHeight * 0.5, // Adjust width as needed
-                  height: screenHeight * 0.2, // Adjust height as needed
-                  color: Colors.transparent, // Make the container transparent
-                ),
-              ),
-            ),
+
             Positioned(
               bottom: screenHeight * 0.0,
               left: screenHeight * 0.100,
@@ -123,6 +101,26 @@ class _HomeScreenState extends State<HomeScreen> {
                       width: 80,
                       height: 80,
                     ),
+            ),
+            Positioned(
+              bottom: screenHeight * 0.11,
+              left: screenHeight * 0.830,
+              child: InkWell(
+                onTap: () {
+                  setState(() {
+                    stopBackgroundAudio();
+                  });
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return const CustomPopup(); // Show the custom popup
+                    },
+                  ).then((_) =>
+                      playBackgroundAudio('background_audio/scene_intro.mp3'));
+                },
+                child: Text(
+                    'Start Reading',style: TextStyle(fontSize: 24,color: Colors.white)),
+              ),
             ),
             Positioned(
               bottom: screenHeight * 0.17,
