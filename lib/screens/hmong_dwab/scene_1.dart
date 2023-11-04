@@ -16,50 +16,79 @@ class SceneD1 extends StatefulWidget {
 }
 
 class _SceneD1State extends State<SceneD1> {
-  late AudioPlayer audioPlayer; // Create an instance of AudioPlayer
-  late AudioPlayer
-      backgroundAudioPlayer; // Audio player for the background track
+   AudioPlayer audioPlayer = AudioPlayer(); // Create an instance of AudioPlayer
+   AudioPlayer backgroundAudioPlayer = AudioPlayer(); // Audio player for the background track
 
-  @override
+  String text = 'he he he he he he he he he';
+  bool isPlaying = false;
+   Duration audioPosition = Duration.zero; // Store the audio position
+
+
+
+
+   @override
   void initState() {
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
         overlays: [SystemUiOverlay.bottom]);
     super.initState();
 
     // Initialize the audio players
-    audioPlayer = AudioPlayer();
-    backgroundAudioPlayer = AudioPlayer();
+
 
     // Play the current audio track
     playAudio('hmong_dwab_audio/scene_1.m4a');
 
-    // Play the background audio track and set it to loop continuously
     playBackgroundAudio('background_audio/scene_1.mp3');
     backgroundAudioPlayer.setReleaseMode(ReleaseMode.loop);
+    audioPlayer.onPositionChanged.listen((Duration position) {
+      setState(() {
+        audioPosition = position;
+      });
+    });
   }
 
   // Function to play the current audio track
   Future<void> playAudio(String audioPath) async {
-    await audioPlayer.play(
-      AssetSource(audioPath),
-    );
+    if (isPlaying) {
+      audioPlayer.pause(); // Pause the audio
+      setState(() {
+        isPlaying = false;
+      });
+    } else {
+      audioPlayer.seek(audioPosition);
+      await audioPlayer.resume(); // Resume the audio
+      await audioPlayer.play(AssetSource(audioPath),);
+      setState(() {
+        isPlaying = true;
+      });
+    }
+
   }
 
   // Function to play the background audio track
   Future<void> playBackgroundAudio(String backgroundAudioPath) async {
-    await backgroundAudioPlayer.play(
-      AssetSource(backgroundAudioPath),
-    );
+    if (isPlaying) {
+      stopBackgroundAudio();
+      setState(() {
+        isPlaying = false;
+      });
+    } else {
+      await backgroundAudioPlayer.play(AssetSource(backgroundAudioPath),);
+      setState(() {
+        isPlaying = true;
+      });
+    }
+
   }
 
   // Function to stop the current audio track
-  Future<void> stopAudio() async {
-    await audioPlayer.stop();
+  stopAudio()  {
+     audioPlayer.stop();
   }
 
   // Function to stop the background audio track
-  Future<void> stopBackgroundAudio() async {
-    await backgroundAudioPlayer.stop();
+  stopBackgroundAudio()  {
+     backgroundAudioPlayer.stop();
   }
 
   @override
@@ -90,90 +119,104 @@ class _SceneD1State extends State<SceneD1> {
             ),
             height: 50,
             width: screenWidth * 0.8,
-            child: Text('ha ha ha ha ha ha ha',style: TextStyle(color: Colors.black),),
+            child: Text(text,style: TextStyle(color: Colors.black),),
           ),
         ),
       ),
-      body: Stack(
-        children: [
-          // Background Image
-          Image.asset(
-            'assets/hmong_dwab/scene_1.png',
-            width: double.infinity,
-            height: double.infinity,
-            fit: BoxFit.fill,
-          ),
-          Positioned(
-            top: screenHeight * 0.1,
-            right: screenHeight * 0.7,
-            child: Container(
-              color: Colors.transparent,
-              height: 200,
-              width: 200,
-              // No need to explicitly add the AudioPlayerScreen here
+      body: GestureDetector(
+        onTap: (){
+          if (isPlaying) {
+            stopAudio();
+            stopBackgroundAudio();
+          } else {
+            playAudio('hmong_dwab_audio/scene_1.m4a');
+            playBackgroundAudio('background_audio/scene_1.mp3');
+          }
+          setState(() {
+            isPlaying = !isPlaying;
+          });
+        },
+        child: Stack(
+          children: [
+            // Background Image
+            Image.asset(
+              'assets/hmong_dwab/scene_1.png',
+              width: double.infinity,
+              height: double.infinity,
+              fit: BoxFit.fill,
             ),
-          ),
-          Positioned(
-            top: screenHeight * 0.01,
-            right: screenHeight * 0.01,
-            child: GestureDetector(
-              onTap: () {
-                stopAudio();
-                stopBackgroundAudio(); // Stop the background audio track
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) => const HomeScreen(),
-                  ),
-                );
-              },
+            Positioned(
+              top: screenHeight * 0.1,
+              right: screenHeight * 0.7,
               child: Container(
-                width: screenHeight * 0.2,
-                height: screenHeight * 0.2,
                 color: Colors.transparent,
+                height: 200,
+                width: 200,
+                // No need to explicitly add the AudioPlayerScreen here
               ),
             ),
-          ),
-          Positioned(
-            bottom: screenHeight * 0.4,
-            right: screenHeight * 0.01,
-            child: GestureDetector(
-              onTap: () {
-                stopAudio();
-                stopBackgroundAudio(); // Stop the background audio track
-                Navigator.of(context).push(
-                  SlideRightPageRoute(
-                    page: const SceneD2(),
-                  ),
-                );
-              },
-              child: Container(
-                width: screenHeight * 0.2,
-                height: screenHeight * 0.2,
-                color: Colors.transparent,
+            Positioned(
+              top: screenHeight * 0.01,
+              right: screenHeight * 0.01,
+              child: GestureDetector(
+                onTap: () {
+                  stopAudio();
+                  stopBackgroundAudio(); // Stop the background audio track
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => const HomeScreen(),
+                    ),
+                  );
+                },
+                child: Container(
+                  width: screenHeight * 0.2,
+                  height: screenHeight * 0.2,
+                  color: Colors.transparent,
+                ),
               ),
             ),
-          ),
-          Positioned(
-            bottom: screenHeight * 0.4,
-            left: screenHeight * 0.01,
-            child: GestureDetector(
-              onTap: () {
-                stopAudio();
-                stopBackgroundAudio(); // Stop the background audio track
-                Navigator.of(context).push(
-                  SlideRightPageRouteB(
-                    page: const HomeScreen(),
-                  ),
-                );
-              },
-              child: Container(
-                width: screenHeight * 0.2,
-                height: screenHeight * 0.2,
-                color: Colors.transparent,
+            Positioned(
+              bottom: screenHeight * 0.4,
+              right: screenHeight * 0.01,
+              child: GestureDetector(
+                onTap: () {
+                  stopAudio();
+                  stopBackgroundAudio(); // Stop the background audio track
+                  Navigator.of(context).push(
+                    SlideRightPageRoute(
+                      page: const SceneD2(),
+                    ),
+                  );
+                },
+                child: Container(
+                  width: screenHeight * 0.2,
+                  height: screenHeight * 0.2,
+                  color: Colors.transparent,
+                ),
               ),
             ),
-          ),
-        ],
+            Positioned(
+              bottom: screenHeight * 0.4,
+              left: screenHeight * 0.01,
+              child: GestureDetector(
+                onTap: () {
+                  stopAudio();
+                  stopBackgroundAudio(); // Stop the background audio track
+                  Navigator.of(context).push(
+                    SlideRightPageRouteB(
+                      page: const HomeScreen(),
+                    ),
+                  );
+                },
+                child: Container(
+                  width: screenHeight * 0.2,
+                  height: screenHeight * 0.2,
+                  color: Colors.transparent,
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
