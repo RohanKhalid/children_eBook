@@ -18,22 +18,22 @@ class SceneD1 extends StatefulWidget {
 }
 
 class _SceneD1State extends State<SceneD1> {
-   AudioPlayer audioPlayer = AudioPlayer(); // Create an instance of AudioPlayer
-   AudioPlayer backgroundAudioPlayer = AudioPlayer(); // Audio player for the background track
+  AudioPlayer audioPlayer = AudioPlayer(); // Create an instance of AudioPlayer
+  AudioPlayer backgroundAudioPlayer = AudioPlayer(); // Audio player for the background track
 
-   TextEditingController textController = TextEditingController();
-   bool isPlaying = false;
-   Duration audioPosition = Duration.zero;
-   int audioDuration = 10; // Set the audio duration in seconds
-   // Store the audio position
-   int totalTextLength = 0;
-   double typingSpeed = 0;
-
-
-
+  bool isPlaying = false;
+  Duration audioPosition = Duration.zero;
+  int audioDuration = 10; // Set the audio duration in seconds
+  Color textColor = Colors.black; // Initial text color
+  Color targetColor = Colors.green; // Target text color
+  bool isGifPlaying = true;
+  List<String> words = ['Peb', 'cov', 'hmoob', 'nyob', 'saum', 'roob', 'ua', 'liaj','ua','teb',' noj.'];
+  int currentWordIndex = 0;
 
 
-   @override
+
+
+  @override
   void initState() {
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
         overlays: [SystemUiOverlay.bottom]);
@@ -52,18 +52,13 @@ class _SceneD1State extends State<SceneD1> {
     audioPlayer.onDurationChanged.listen((Duration duration) {
       setState(() {
         audioDuration = duration.inSeconds; // Get the audio duration
-        totalTextLength = 'Peb cov hmoob nyob saum roob ua liaj ua teb noj.'.length;
-        typingSpeed = totalTextLength / audioDuration;// Get the audio duration
       });
     });
 
     audioPlayer.onPositionChanged.listen((Duration position) {
       setState(() {
         audioPosition = position;
-        if (audioPosition.inSeconds < audioDuration) {
-          int textPosition = (audioPosition.inSeconds * typingSpeed).floor();
-          textController.text = 'Peb cov hmoob nyob saum roob ua liaj ua teb noj.'.substring(0, textPosition);
-        }
+        updateTextColor();
       });
     });
 
@@ -107,12 +102,22 @@ class _SceneD1State extends State<SceneD1> {
 
   // Function to stop the current audio track
   stopAudio()  {
-     audioPlayer.stop();
+    audioPlayer.stop();
   }
 
   // Function to stop the background audio track
   stopBackgroundAudio()  {
-     backgroundAudioPlayer.stop();
+    backgroundAudioPlayer.stop();
+  }
+
+
+  void updateTextColor() {
+    double progress = audioPosition.inSeconds / audioDuration;
+
+    if (currentWordIndex < words.length && progress >= (currentWordIndex + 1) / words.length) {
+      currentWordIndex++;
+      textColor = targetColor;
+    }
   }
 
   toggleGif() {
@@ -121,12 +126,12 @@ class _SceneD1State extends State<SceneD1> {
     });
   }
 
+
   @override
   void dispose() {
     // Dispose of the audioPlayer when the widget is disposed
     audioPlayer.dispose();
     backgroundAudioPlayer.dispose();
-    textController.dispose();
     super.dispose();
   }
 
@@ -150,13 +155,17 @@ class _SceneD1State extends State<SceneD1> {
             ),
             height: 50,
             width: screenWidth * 0.8,
-            child: Padding(
-              padding: const EdgeInsets.only(left: 10),
-              child: TextField(
-                controller: textController, // Use the text controller to control the text
-                readOnly: true,
-                style: TextStyle(fontFamily:'TimesNewRoman',fontSize: 22,fontWeight: FontWeight.w400, color: Colors.black),
-              ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                for (int i = 0; i < words.length; i++)
+                  Text(
+                    '${words[i]} ',
+                    style: TextStyle(
+                      color: i == currentWordIndex ? textColor : Colors.black,
+                    ),
+                  ),
+              ],
             ),
           ),
         ),
@@ -190,16 +199,16 @@ class _SceneD1State extends State<SceneD1> {
               left: screenHeight * 0.6,
               child: isGifPlaying
                   ? Image.asset(
-                      'assets/hmong_dwab_gif/corn_girl.gif',
-                      height: 300,
-                      width: 100,
-                      fit: BoxFit.cover,
-                    )
+                'assets/hmong_dwab_gif/corn_girl.gif',
+                height: 300,
+                width: 100,
+                fit: BoxFit.cover,
+              )
                   : Image.asset(
-                      'assets/hmong_dwab_gif/corn_girl_icon.png',
-                      height: 320,
-                      width: 130,
-                    ),
+                'assets/hmong_dwab_gif/corn_girl_icon.png',
+                height: 320,
+                width: 130,
+              ),
             ),
 
             Positioned(
