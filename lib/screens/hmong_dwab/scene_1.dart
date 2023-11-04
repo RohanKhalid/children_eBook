@@ -16,24 +16,22 @@ class SceneD1 extends StatefulWidget {
 }
 
 class _SceneD1State extends State<SceneD1> {
-   AudioPlayer audioPlayer = AudioPlayer(); // Create an instance of AudioPlayer
-   AudioPlayer backgroundAudioPlayer = AudioPlayer(); // Audio player for the background track
+  AudioPlayer audioPlayer = AudioPlayer(); // Create an instance of AudioPlayer
+  AudioPlayer backgroundAudioPlayer =
+      AudioPlayer(); // Audio player for the background track
 
   String text = 'he he he he he he he he he';
   bool isPlaying = false;
-   Duration audioPosition = Duration.zero; // Store the audio position
+  Duration audioPosition = Duration.zero;
+  bool isGifPlaying = true;
 
-
-
-
-   @override
+  @override
   void initState() {
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
         overlays: [SystemUiOverlay.bottom]);
     super.initState();
 
     // Initialize the audio players
-
 
     // Play the current audio track
     playAudio('hmong_dwab_audio/scene_1.m4a');
@@ -57,12 +55,13 @@ class _SceneD1State extends State<SceneD1> {
     } else {
       audioPlayer.seek(audioPosition);
       await audioPlayer.resume(); // Resume the audio
-      await audioPlayer.play(AssetSource(audioPath),);
+      await audioPlayer.play(
+        AssetSource(audioPath),
+      );
       setState(() {
         isPlaying = true;
       });
     }
-
   }
 
   // Function to play the background audio track
@@ -73,22 +72,29 @@ class _SceneD1State extends State<SceneD1> {
         isPlaying = false;
       });
     } else {
-      await backgroundAudioPlayer.play(AssetSource(backgroundAudioPath),);
+      await backgroundAudioPlayer.play(
+        AssetSource(backgroundAudioPath),
+      );
       setState(() {
         isPlaying = true;
       });
     }
-
   }
 
   // Function to stop the current audio track
-  stopAudio()  {
-     audioPlayer.stop();
+  stopAudio() {
+    audioPlayer.stop();
   }
 
   // Function to stop the background audio track
-  stopBackgroundAudio()  {
-     backgroundAudioPlayer.stop();
+  stopBackgroundAudio() {
+    backgroundAudioPlayer.stop();
+  }
+
+  toggleGif() {
+    setState(() {
+      isGifPlaying = !isGifPlaying;
+    });
   }
 
   @override
@@ -119,18 +125,23 @@ class _SceneD1State extends State<SceneD1> {
             ),
             height: 50,
             width: screenWidth * 0.8,
-            child: Text(text,style: TextStyle(color: Colors.black),),
+            child: Text(
+              text,
+              style: TextStyle(color: Colors.black),
+            ),
           ),
         ),
       ),
       body: GestureDetector(
-        onTap: (){
+        onTap: () {
           if (isPlaying) {
             stopAudio();
             stopBackgroundAudio();
+            toggleGif();
           } else {
             playAudio('hmong_dwab_audio/scene_1.m4a');
             playBackgroundAudio('background_audio/scene_1.mp3');
+            toggleGif();
           }
           setState(() {
             isPlaying = !isPlaying;
@@ -140,11 +151,28 @@ class _SceneD1State extends State<SceneD1> {
           children: [
             // Background Image
             Image.asset(
-              'assets/hmong_dwab/scene_1.png',
+              'assets/hmong_dwab/scene1.png',
               width: double.infinity,
               height: double.infinity,
               fit: BoxFit.fill,
             ),
+            Positioned(
+              bottom: screenHeight * 0.0,
+              left: screenHeight * 0.6,
+              child: isGifPlaying
+                  ? Image.asset(
+                      'assets/hmong_dwab_gif/corn_girl.gif',
+                      height: 300,
+                      width: 100,
+                      fit: BoxFit.cover,
+                    )
+                  : Image.asset(
+                      'assets/hmong_dwab_gif/corn_girl_icon.png',
+                      height: 320,
+                      width: 130,
+                    ),
+            ),
+
             Positioned(
               top: screenHeight * 0.1,
               right: screenHeight * 0.7,
@@ -191,7 +219,7 @@ class _SceneD1State extends State<SceneD1> {
                 child: Container(
                   width: screenHeight * 0.2,
                   height: screenHeight * 0.2,
-                  color: Colors.transparent,
+                  color: Colors.red,
                 ),
               ),
             ),
@@ -211,7 +239,7 @@ class _SceneD1State extends State<SceneD1> {
                 child: Container(
                   width: screenHeight * 0.2,
                   height: screenHeight * 0.2,
-                  color: Colors.transparent,
+                  color: Colors.red,
                 ),
               ),
             ),
