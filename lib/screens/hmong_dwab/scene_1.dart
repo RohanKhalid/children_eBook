@@ -1,5 +1,7 @@
 // ignore_for_file: library_private_types_in_public_api
 
+import 'dart:async';
+
 import 'package:ebook/animations/back_page_animation.dart';
 import 'package:ebook/animations/forward_page_animation.dart';
 import 'package:ebook/screens/hmong_dwab/scene_2.dart';
@@ -19,9 +21,14 @@ class _SceneD1State extends State<SceneD1> {
    AudioPlayer audioPlayer = AudioPlayer(); // Create an instance of AudioPlayer
    AudioPlayer backgroundAudioPlayer = AudioPlayer(); // Audio player for the background track
 
-  String text = 'he he he he he he he he he';
-  bool isPlaying = false;
-   Duration audioPosition = Duration.zero; // Store the audio position
+   TextEditingController textController = TextEditingController();
+   bool isPlaying = false;
+   Duration audioPosition = Duration.zero;
+   int audioDuration = 10; // Set the audio duration in seconds
+   // Store the audio position
+   int totalTextLength = 0;
+   double typingSpeed = 0;
+
 
 
 
@@ -40,11 +47,28 @@ class _SceneD1State extends State<SceneD1> {
 
     playBackgroundAudio('background_audio/scene_1.mp3');
     backgroundAudioPlayer.setReleaseMode(ReleaseMode.loop);
+
+
+    audioPlayer.onDurationChanged.listen((Duration duration) {
+      setState(() {
+        audioDuration = duration.inSeconds; // Get the audio duration
+        totalTextLength = 'Peb cov hmoob nyob saum roob ua liaj ua teb noj.'.length;
+        typingSpeed = totalTextLength / audioDuration;// Get the audio duration
+      });
+    });
+
     audioPlayer.onPositionChanged.listen((Duration position) {
       setState(() {
         audioPosition = position;
+        if (audioPosition.inSeconds < audioDuration) {
+          int textPosition = (audioPosition.inSeconds * typingSpeed).floor();
+          textController.text = 'Peb cov hmoob nyob saum roob ua liaj ua teb noj.'.substring(0, textPosition);
+        }
       });
     });
+
+
+
   }
 
   // Function to play the current audio track
@@ -96,6 +120,7 @@ class _SceneD1State extends State<SceneD1> {
     // Dispose of the audioPlayer when the widget is disposed
     audioPlayer.dispose();
     backgroundAudioPlayer.dispose();
+    textController.dispose();
     super.dispose();
   }
 
@@ -119,7 +144,14 @@ class _SceneD1State extends State<SceneD1> {
             ),
             height: 50,
             width: screenWidth * 0.8,
-            child: Text(text,style: TextStyle(color: Colors.black),),
+            child: Padding(
+              padding: const EdgeInsets.only(left: 10),
+              child: TextField(
+                controller: textController, // Use the text controller to control the text
+                readOnly: true,
+                style: TextStyle(fontFamily:'TimesNewRoman',fontSize: 22,fontWeight: FontWeight.w400, color: Colors.black),
+              ),
+            ),
           ),
         ),
       ),
