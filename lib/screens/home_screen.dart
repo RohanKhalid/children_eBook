@@ -80,8 +80,8 @@ class _HomeScreenState extends State<HomeScreen> {
             // Background Image
             Image.asset(
               'assets/home_bg.png',
-              width: double.infinity,
-              height: double.infinity,
+              width: double.maxFinite,
+              height: double.maxFinite,
               fit: BoxFit.cover,
             ),
 

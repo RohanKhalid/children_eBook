@@ -162,7 +162,7 @@ class _SceneD1State extends State<SceneD1> {
                   Text(
                     '${words[i]} ',
                     style: TextStyle(
-                      color: i == currentWordIndex ? textColor : Colors.black,
+                      color: i == currentWordIndex ? textColor : Colors.black,fontFamily: 'TimesNewRoman' ,fontSize: 22,fontWeight: FontWeight.w600
                     ),
                   ),
               ],
@@ -170,119 +170,150 @@ class _SceneD1State extends State<SceneD1> {
           ),
         ),
       ),
-      body: GestureDetector(
-        onTap: (){
-          if (isPlaying) {
-            stopAudio();
-            stopBackgroundAudio();
-            toggleGif();
-          } else {
-            playAudio('hmong_dwab_audio/scene_1.m4a');
-            playBackgroundAudio('background_audio/scene_1.mp3');
-            toggleGif();
-          }
-          setState(() {
-            isPlaying = !isPlaying;
-          });
-        },
-        child: Stack(
-          children: [
-            // Background Image
-            Image.asset(
-              'assets/hmong_dwab/scene1.png',
-              width: double.infinity,
-              height: double.infinity,
-              fit: BoxFit.fill,
-            ),
-            Positioned(
-              bottom: screenHeight * 0.0,
-              left: screenHeight * 0.6,
-              child: isGifPlaying
-                  ? Image.asset(
-                'assets/hmong_dwab_gif/corn_girl.gif',
-                height: 300,
-                width: 100,
-                fit: BoxFit.cover,
-              )
-                  : Image.asset(
-                'assets/hmong_dwab_gif/corn_girl_icon.png',
-                height: 320,
-                width: 130,
-              ),
-            ),
+      body: Stack(
+        children: [
+          // Background Image
+          Image.asset(
+            'assets/hmong_dwab/scene1.png',
+            width: double.infinity,
+            height: double.infinity,
+            fit: BoxFit.fill,
+          ),
 
-            Positioned(
-              top: screenHeight * 0.1,
-              right: screenHeight * 0.7,
+          Positioned(
+            top: screenHeight * 0.20,
+            left: screenHeight * 0.57,
+            child:isGifPlaying? Image.asset(
+              'assets/hmong_dwab_gif/cow_girl1.gif',
+              height: 330,
+              width: 100,
+              fit: BoxFit.cover,
+            ):Image.asset(
+              'assets/hmong_dwab/cow_girl.png',
+              height: 330,
+              width: 100,
+
+            )
+          ),
+
+
+
+
+          Positioned(
+            top: screenHeight * 0.48,
+            left: screenHeight * 0.8,
+            child: isGifPlaying
+                ? Image.asset(
+              'assets/hmong_dwab_gif/cow_gif.gif',
+              height: 200,
+              width: 330,
+              fit: BoxFit.cover,
+            )
+                : Image.asset(
+              'assets/hmong_dwab/cow.png',
+              height: 220,
+              width: 350,
+            ),
+          ),
+
+
+
+
+          Positioned(
+            top: screenHeight * 0.1,
+            right: screenHeight * 0.7,
+            child: Container(
+              color: Colors.transparent,
+              height: 200,
+              width: 200,
+              // No need to explicitly add the AudioPlayerScreen here
+            ),
+          ),
+          Positioned(
+            top: screenHeight * 0.01,
+            right: screenHeight * 0.01,
+            child: GestureDetector(
+              onTap: () {
+                stopAudio();
+                stopBackgroundAudio(); // Stop the background audio track
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => const HomeScreen(),
+                  ),
+                );
+              },
               child: Container(
+                child: Image.asset('assets/hmong_dwab/homeicon.png'),
+                width: screenHeight * 0.2,
+                height: screenHeight * 0.2,
                 color: Colors.transparent,
-                height: 200,
-                width: 200,
-                // No need to explicitly add the AudioPlayerScreen here
               ),
             ),
-            Positioned(
-              top: screenHeight * 0.01,
-              right: screenHeight * 0.01,
-              child: GestureDetector(
-                onTap: () {
+          ),
+          Positioned(
+            bottom: screenHeight * 0.4,
+            right: screenHeight * 0.01,
+            child: GestureDetector(
+              onTap: () {
+                stopAudio();
+                stopBackgroundAudio(); // Stop the background audio track
+                Navigator.of(context).push(
+                  SlideRightPageRoute(
+                    page: const SceneD2(),
+                  ),
+                );
+              },
+              child: Container(
+                child: Image.asset('assets/hmong_dwab/arrow_right.png'),
+                width: screenHeight * 0.2,
+                height: screenHeight * 0.2,
+                color: Colors.transparent,
+              ),
+            ),
+          ),
+          Positioned(
+            bottom: screenHeight * 0.4,
+            left: screenHeight * 0.01,
+            child: GestureDetector(
+              onTap: () {
+                stopAudio();
+                stopBackgroundAudio(); // Stop the background audio track
+                Navigator.of(context).push(
+                  SlideRightPageRouteB(
+                    page: const HomeScreen(),
+                  ),
+                );
+              },
+              child: Container(
+                child: Image.asset('assets/hmong_dwab/arrow_left.png'),
+                width: screenHeight * 0.2,
+                height: screenHeight * 0.2,
+                color: Colors.transparent,
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(top: 80.0,left: 320),
+            child: GestureDetector(
+              onTap: () {
+                if (isPlaying) {
                   stopAudio();
-                  stopBackgroundAudio(); // Stop the background audio track
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (context) => const HomeScreen(),
-                    ),
-                  );
-                },
-                child: Container(
-                  width: screenHeight * 0.2,
-                  height: screenHeight * 0.2,
-                  color: Colors.transparent,
-                ),
-              ),
+                  stopBackgroundAudio();
+                } else {
+                  playAudio('hmong_dwab_audio/scene_1.m4a');
+                  playBackgroundAudio('background_audio/scene_1.mp3');
+                }
+                toggleGif();
+                setState(() {
+                  isPlaying = !isPlaying;
+                });
+              },
+              child: isGifPlaying
+                  ? Image.asset('assets/hmong_dwab/pause.png')
+                  : Image.asset('assets/hmong_dwab/play.png'),
             ),
-            Positioned(
-              bottom: screenHeight * 0.4,
-              right: screenHeight * 0.01,
-              child: GestureDetector(
-                onTap: () {
-                  stopAudio();
-                  stopBackgroundAudio(); // Stop the background audio track
-                  Navigator.of(context).push(
-                    SlideRightPageRoute(
-                      page: const SceneD2(),
-                    ),
-                  );
-                },
-                child: Container(
-                  width: screenHeight * 0.2,
-                  height: screenHeight * 0.2,
-                  color: Colors.red,
-                ),
-              ),
-            ),
-            Positioned(
-              bottom: screenHeight * 0.4,
-              left: screenHeight * 0.01,
-              child: GestureDetector(
-                onTap: () {
-                  stopAudio();
-                  stopBackgroundAudio(); // Stop the background audio track
-                  Navigator.of(context).push(
-                    SlideRightPageRouteB(
-                      page: const HomeScreen(),
-                    ),
-                  );
-                },
-                child: Container(
-                  width: screenHeight * 0.2,
-                  height: screenHeight * 0.2,
-                  color: Colors.red,
-                ),
-              ),
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
