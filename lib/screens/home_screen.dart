@@ -108,18 +108,21 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
             ),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(left: 25.0),
-                  child: Image.asset(
-                    'assets/hmong_dwab_gif/hen.gif',
-                    width: 80,
-                    height: 80,
-                  ),
-                ),
-              ],
+            Positioned(
+              bottom: screenHeight * 0.0,
+              left: screenHeight * 0.100,
+              child: isGifPlaying
+                  ? Image.asset(
+                      'assets/hmong_dwab_gif/hen.gif',
+                      width: 80,
+                      height: 80,
+                      fit: BoxFit.cover,
+                    )
+                  : Image.asset(
+                      'assets/hmong_dwab_gif/hen_icon.png',
+                      width: 80,
+                      height: 80,
+                    ),
             ),
             Positioned(
               bottom: screenHeight * 0.17,
@@ -141,13 +144,20 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
             ),
             Positioned(
-              bottom: screenHeight * 0.06,
-              right: screenHeight * 0.200,
-              child: Image.asset(
-                'assets/hmong_dwab_gif/girl.gif',
-                width: 100,
-                height: 100,
-              ),
+              bottom: screenHeight * 0.02,
+              right: screenHeight * 0.100,
+              child: isGifPlaying
+                  ? Image.asset(
+                      'assets/hmong_dwab_gif/girl.gif',
+                      width: 150,
+                      height: 250,
+                      fit: BoxFit.cover,
+                    )
+                  : Image.asset(
+                      'assets/hmong_dwab_gif/girl_icon.png',
+                      width: 150,
+                      height: 240,
+                    ),
             ),
           ],
         ),

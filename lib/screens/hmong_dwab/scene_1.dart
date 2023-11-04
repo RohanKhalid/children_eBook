@@ -115,6 +115,12 @@ class _SceneD1State extends State<SceneD1> {
      backgroundAudioPlayer.stop();
   }
 
+  toggleGif() {
+    setState(() {
+      isGifPlaying = !isGifPlaying;
+    });
+  }
+
   @override
   void dispose() {
     // Dispose of the audioPlayer when the widget is disposed
@@ -160,9 +166,11 @@ class _SceneD1State extends State<SceneD1> {
           if (isPlaying) {
             stopAudio();
             stopBackgroundAudio();
+            toggleGif();
           } else {
             playAudio('hmong_dwab_audio/scene_1.m4a');
             playBackgroundAudio('background_audio/scene_1.mp3');
+            toggleGif();
           }
           setState(() {
             isPlaying = !isPlaying;
@@ -172,11 +180,28 @@ class _SceneD1State extends State<SceneD1> {
           children: [
             // Background Image
             Image.asset(
-              'assets/hmong_dwab/scene_1.png',
+              'assets/hmong_dwab/scene1.png',
               width: double.infinity,
               height: double.infinity,
               fit: BoxFit.fill,
             ),
+            Positioned(
+              bottom: screenHeight * 0.0,
+              left: screenHeight * 0.6,
+              child: isGifPlaying
+                  ? Image.asset(
+                      'assets/hmong_dwab_gif/corn_girl.gif',
+                      height: 300,
+                      width: 100,
+                      fit: BoxFit.cover,
+                    )
+                  : Image.asset(
+                      'assets/hmong_dwab_gif/corn_girl_icon.png',
+                      height: 320,
+                      width: 130,
+                    ),
+            ),
+
             Positioned(
               top: screenHeight * 0.1,
               right: screenHeight * 0.7,
@@ -223,7 +248,7 @@ class _SceneD1State extends State<SceneD1> {
                 child: Container(
                   width: screenHeight * 0.2,
                   height: screenHeight * 0.2,
-                  color: Colors.transparent,
+                  color: Colors.red,
                 ),
               ),
             ),
@@ -243,7 +268,7 @@ class _SceneD1State extends State<SceneD1> {
                 child: Container(
                   width: screenHeight * 0.2,
                   height: screenHeight * 0.2,
-                  color: Colors.transparent,
+                  color: Colors.red,
                 ),
               ),
             ),
