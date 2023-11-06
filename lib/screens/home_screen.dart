@@ -65,7 +65,6 @@ class _HomeScreenState extends State<HomeScreen> {
     // Get the device's screen size
     double screenHeight = MediaQuery.of(context).size.height;
     double screenWidth = MediaQuery.of(context).size.width;
-    // double screenWidth = MediaQuery.of(context).size.width;
 
     return Scaffold(
       body: GestureDetector(
@@ -85,10 +84,9 @@ class _HomeScreenState extends State<HomeScreen> {
               fit: BoxFit.cover,
             ),
 
-
             Positioned(
-              bottom: screenHeight * 0.0,
-              left: screenHeight * 0.100,
+              bottom: screenHeight * 0.3,
+              left: screenHeight * 0.175,
               child: isGifPlaying
                   ? Image.asset(
                       'assets/hmong_dwab_gif/hen.gif',
@@ -103,8 +101,8 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
             ),
             Positioned(
-              bottom: screenHeight * 0.11,
-              left: screenHeight * 0.830,
+              bottom: screenHeight * 0.125,
+              left: screenHeight * 0.8,
               child: InkWell(
                 onTap: () {
                   setState(() {
@@ -118,8 +116,8 @@ class _HomeScreenState extends State<HomeScreen> {
                   ).then((_) =>
                       playBackgroundAudio('background_audio/scene_intro.mp3'));
                 },
-                child: Text(
-                    'Start Reading',style: TextStyle(fontSize: 24,color: Colors.white)),
+                child: const Text('Start Reading',
+                    style: TextStyle(fontSize: 24, color: Colors.white)),
               ),
             ),
             Positioned(

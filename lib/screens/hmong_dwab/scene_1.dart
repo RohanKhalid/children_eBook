@@ -9,6 +9,8 @@ import 'package:ebook/screens/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:audioplayers/audioplayers.dart'; // Import the audioplayers package
+import 'package:gif_view/gif_view.dart';
+import 'package:sizer/sizer.dart';
 
 class SceneD1 extends StatefulWidget {
   const SceneD1({Key? key}) : super(key: key);
@@ -19,19 +21,30 @@ class SceneD1 extends StatefulWidget {
 
 class _SceneD1State extends State<SceneD1> {
   AudioPlayer audioPlayer = AudioPlayer(); // Create an instance of AudioPlayer
-  AudioPlayer backgroundAudioPlayer = AudioPlayer(); // Audio player for the background track
-
+  AudioPlayer backgroundAudioPlayer =
+      AudioPlayer(); // Audio player for the background track
+  final GifController _gifControllerCowGirl = GifController();
+  final GifController _gifControllerCow = GifController();
   bool isPlaying = false;
   Duration audioPosition = Duration.zero;
   int audioDuration = 10; // Set the audio duration in seconds
   Color textColor = Colors.black; // Initial text color
   Color targetColor = Colors.green; // Target text color
   bool isGifPlaying = true;
-  List<String> words = ['Peb', 'cov', 'hmoob', 'nyob', 'saum', 'roob', 'ua', 'liaj','ua','teb',' noj.'];
+  List<String> words = [
+    'Peb',
+    'cov',
+    'hmoob',
+    'nyob',
+    'saum',
+    'roob',
+    'ua',
+    'liaj',
+    'ua',
+    'teb',
+    ' noj.'
+  ];
   int currentWordIndex = 0;
-
-
-
 
   @override
   void initState() {
@@ -41,13 +54,11 @@ class _SceneD1State extends State<SceneD1> {
 
     // Initialize the audio players
 
-
     // Play the current audio track
     playAudio('hmong_dwab_audio/scene_1.m4a');
 
     playBackgroundAudio('background_audio/scene_1.mp3');
     backgroundAudioPlayer.setReleaseMode(ReleaseMode.loop);
-
 
     audioPlayer.onDurationChanged.listen((Duration duration) {
       setState(() {
@@ -61,9 +72,6 @@ class _SceneD1State extends State<SceneD1> {
         updateTextColor();
       });
     });
-
-
-
   }
 
   // Function to play the current audio track
@@ -76,45 +84,47 @@ class _SceneD1State extends State<SceneD1> {
     } else {
       audioPlayer.seek(audioPosition);
       await audioPlayer.resume(); // Resume the audio
-      await audioPlayer.play(AssetSource(audioPath),);
+      await audioPlayer.play(
+        AssetSource(audioPath),
+      );
       setState(() {
         isPlaying = true;
       });
     }
-
   }
 
   // Function to play the background audio track
   Future<void> playBackgroundAudio(String backgroundAudioPath) async {
     if (isPlaying) {
-      stopBackgroundAudio();
+      backgroundAudioPlayer.pause();
       setState(() {
         isPlaying = false;
       });
     } else {
-      await backgroundAudioPlayer.play(AssetSource(backgroundAudioPath),);
+      await backgroundAudioPlayer.play(
+        AssetSource(backgroundAudioPath),
+      );
       setState(() {
         isPlaying = true;
       });
     }
-
   }
 
   // Function to stop the current audio track
-  stopAudio()  {
+  stopAudio() {
     audioPlayer.stop();
   }
 
   // Function to stop the background audio track
-  stopBackgroundAudio()  {
+  stopBackgroundAudio() {
     backgroundAudioPlayer.stop();
   }
-
 
   void updateTextColor() {
     double progress = audioPosition.inSeconds / audioDuration;
 
-    if (currentWordIndex < words.length && progress >= (currentWordIndex + 1) / words.length) {
+    if (currentWordIndex < words.length &&
+        progress >= (currentWordIndex + 1) / words.length) {
       currentWordIndex++;
       textColor = targetColor;
     }
@@ -122,16 +132,24 @@ class _SceneD1State extends State<SceneD1> {
 
   toggleGif() {
     setState(() {
+      if (isGifPlaying) {
+        _gifControllerCowGirl.stop();
+        _gifControllerCow.stop();
+      } else {
+        _gifControllerCowGirl.play();
+        _gifControllerCow.play();
+      }
       isGifPlaying = !isGifPlaying;
     });
   }
-
 
   @override
   void dispose() {
     // Dispose of the audioPlayer when the widget is disposed
     audioPlayer.dispose();
     backgroundAudioPlayer.dispose();
+    _gifControllerCow.dispose();
+    _gifControllerCowGirl.dispose();
     super.dispose();
   }
 
@@ -145,6 +163,7 @@ class _SceneD1State extends State<SceneD1> {
       appBar: AppBar(
         forceMaterialTransparency: true,
         centerTitle: true,
+        toolbarHeight: 80,
         title: Padding(
           padding: const EdgeInsets.only(top: 12.0),
           child: Container(
@@ -153,7 +172,7 @@ class _SceneD1State extends State<SceneD1> {
               border: Border.all(width: 1, color: Colors.black),
               color: Colors.white,
             ),
-            height: 50,
+            height: 80,
             width: screenWidth * 0.8,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -162,8 +181,10 @@ class _SceneD1State extends State<SceneD1> {
                   Text(
                     '${words[i]} ',
                     style: TextStyle(
-                      color: i == currentWordIndex ? textColor : Colors.black,fontFamily: 'TimesNewRoman' ,fontSize: 22,fontWeight: FontWeight.w600
-                    ),
+                        color: i == currentWordIndex ? textColor : Colors.black,
+                        fontFamily: 'TimesNewRoman',
+                        fontSize: 22,
+                        fontWeight: FontWeight.w600),
                   ),
               ],
             ),
@@ -181,43 +202,34 @@ class _SceneD1State extends State<SceneD1> {
           ),
 
           Positioned(
-            top: screenHeight * 0.20,
-            left: screenHeight * 0.57,
-            child:isGifPlaying? Image.asset(
-              'assets/hmong_dwab_gif/cow_girl1.gif',
-              height: 330,
-              width: 100,
-              fit: BoxFit.cover,
-            ):Image.asset(
-              'assets/hmong_dwab/cow_girl.png',
-              height: 330,
-              width: 100,
+            top: screenHeight * 0.3,
+            left: screenHeight * 0.42,
+            child: SizedBox(
+              height: 40.h,
+              child: GifView.asset(
+                'assets/hmong_dwab_gif/cow_girl1.gif', // Replace with your .gif file path
+                controller: _gifControllerCowGirl,
 
-            )
-          ),
-
-
-
-
-          Positioned(
-            top: screenHeight * 0.48,
-            left: screenHeight * 0.8,
-            child: isGifPlaying
-                ? Image.asset(
-              'assets/hmong_dwab_gif/cow_gif.gif',
-              height: 200,
-              width: 330,
-              fit: BoxFit.cover,
-            )
-                : Image.asset(
-              'assets/hmong_dwab/cow.png',
-              height: 220,
-              width: 350,
+                repeat:
+                    ImageRepeat.noRepeat, // Set whether the GIF should repeat
+              ),
             ),
           ),
 
+          Positioned(
+              top: 20.h,
+              left: 88.w,
+              child: SizedBox(
+                height: 40.h,
+                width: 90.w,
+                child: GifView.asset(
+                  'assets/hmong_dwab_gif/cow_gif.gif', // Replace with your .gif file path
+                  controller: _gifControllerCow,
 
-
+                  repeat:
+                      ImageRepeat.noRepeat, // Set whether the GIF should repeat
+                ),
+              )),
 
           Positioned(
             top: screenHeight * 0.1,
@@ -243,10 +255,10 @@ class _SceneD1State extends State<SceneD1> {
                 );
               },
               child: Container(
-                child: Image.asset('assets/hmong_dwab/homeicon.png'),
                 width: screenHeight * 0.2,
                 height: screenHeight * 0.2,
                 color: Colors.transparent,
+                child: Image.asset('assets/hmong_dwab/homeicon.png'),
               ),
             ),
           ),
@@ -264,10 +276,10 @@ class _SceneD1State extends State<SceneD1> {
                 );
               },
               child: Container(
-                child: Image.asset('assets/hmong_dwab/arrow_right.png'),
                 width: screenHeight * 0.2,
                 height: screenHeight * 0.2,
                 color: Colors.transparent,
+                child: Image.asset('assets/hmong_dwab/arrow_right.png'),
               ),
             ),
           ),
@@ -285,15 +297,15 @@ class _SceneD1State extends State<SceneD1> {
                 );
               },
               child: Container(
-                child: Image.asset('assets/hmong_dwab/arrow_left.png'),
                 width: screenHeight * 0.2,
                 height: screenHeight * 0.2,
                 color: Colors.transparent,
+                child: Image.asset('assets/hmong_dwab/arrow_left.png'),
               ),
             ),
           ),
           Padding(
-            padding: const EdgeInsets.only(top: 80.0,left: 320),
+            padding: EdgeInsets.only(top: 80.0, left: screenWidth * 0.5),
             child: GestureDetector(
               onTap: () {
                 if (isPlaying) {
