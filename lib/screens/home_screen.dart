@@ -24,7 +24,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   void initState() {
-    // SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: [SystemUiOverlay.bottom]);
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
+        overlays: [SystemUiOverlay.bottom]);
     super.initState();
     playBackgroundAudio('background_audio/scene_intro.mp3');
     // backgroundAudioPlayer.setReleaseMode(ReleaseMode.loop);
@@ -73,12 +74,12 @@ class _HomeScreenState extends State<HomeScreen> {
       isGifPlaying = !isGifPlaying;
     });
   }
+
   @override
   Widget build(BuildContext context) {
     SystemChrome.setPreferredOrientations([DeviceOrientation.landscapeLeft]);
     // Get the device's screen size
     double screenHeight = MediaQuery.of(context).size.height;
-    double screenWidth = MediaQuery.of(context).size.width;
 
     return Scaffold(
       body: GestureDetector(
@@ -99,9 +100,9 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
 
             Positioned(
-              bottom: screenHeight * 0.25,
-              left: screenHeight * 0.175,
-              child:  SizedBox(
+              bottom: 11.h,
+              left: 10.w,
+              child: SizedBox(
                 child: GifView.asset(
                   'assets/hmong_dwab_gif/hen.gif',
                   controller: _gifControllerHen,
@@ -111,8 +112,8 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
             Positioned(
-              bottom: screenHeight * 0.125,
-              left: screenHeight * 0.8,
+              bottom: screenHeight * 0.08,
+              left: screenHeight * 0.715,
               child: InkWell(
                 onTap: () {
                   setState(() {
@@ -126,34 +127,36 @@ class _HomeScreenState extends State<HomeScreen> {
                   ).then((_) =>
                       playBackgroundAudio('background_audio/scene_intro.mp3'));
                 },
-                child: const Text('Start Reading', style: TextStyle(fontSize: 24, color: Colors.white)),
+                child: const SizedBox(
+                  height: 70,
+                  width: 210,
+                ),
               ),
             ),
             Positioned(
-              bottom: screenHeight * 0.17,
-              right: screenHeight * 0.360,
-              child:  Transform(
-                      alignment: Alignment.center,
-                      transform: Matrix4.rotationY(3.141),
-                      child: SizedBox(
-                        child: GifView.asset(
-                          'assets/hmong_dwab_gif/bird.gif',
-                          controller: _gifControllerBird,
-                          repeat: ImageRepeat.noRepeat,
-                          height: 14.h,
-                        ),
-                      ),
-                    )
-            ),
+                bottom: 8.h,
+                right: 35.w,
+                child: Transform(
+                  alignment: Alignment.center,
+                  transform: Matrix4.rotationY(3.141),
+                  child: SizedBox(
+                    child: GifView.asset(
+                      'assets/hmong_dwab_gif/bird.gif',
+                      controller: _gifControllerBird,
+                      repeat: ImageRepeat.noRepeat,
+                      height: 14.h,
+                    ),
+                  ),
+                )),
             Positioned(
-              bottom: screenHeight * 0.0,
-              left: screenHeight * 1.2,
+              bottom: 0,
+              right: -6.w,
               child: SizedBox(
                 child: GifView.asset(
                   'assets/hmong_dwab_gif/girl.gif',
                   controller: _gifControllerGirl,
                   repeat: ImageRepeat.noRepeat,
-                  height: 30.h,
+                  height: 20.h,
                 ),
               ),
             ),

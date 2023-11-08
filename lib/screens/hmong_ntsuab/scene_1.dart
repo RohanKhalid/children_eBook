@@ -250,7 +250,7 @@ class _Scene1State extends State<Scene1> {
 
           Positioned(
               top: 20.h,
-              left: 88.w,
+              right: 17.w,
               child: SizedBox(
                 height: 40.h,
                 width: 90.w,
