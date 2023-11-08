@@ -104,13 +104,15 @@ class _SceneD4State extends State<SceneD4> {
     updateTextColor(); // Update text color based on the reset values
     if (isPlaying) {
       audioPlayer.pause(); // Pause the audio
-      await audioPlayer.seek(Duration(milliseconds: 0)); // Seek to the start
+      await audioPlayer
+          .seek(const Duration(milliseconds: 0)); // Seek to the start
       await audioPlayer.resume(); // Resume the audio
       setState(() {
         isPlaying = true;
       });
     } else {
-      await audioPlayer.seek(Duration(milliseconds: 0)); // Seek to the start
+      await audioPlayer
+          .seek(const Duration(milliseconds: 0)); // Seek to the start
       await audioPlayer.play(
         AssetSource(audioPath),
       );
