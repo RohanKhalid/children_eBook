@@ -305,7 +305,7 @@ class _Scene4State extends State<Scene4> {
                 ),
               )),
           Positioned(
-              top: 35.h,
+              bottom: 0,
               left: 20.h,
               child: SizedBox(
                 child: GifView.asset(
@@ -317,7 +317,7 @@ class _Scene4State extends State<Scene4> {
                 ),
               )),
           Positioned(
-              top: 44.h,
+              bottom: 10,
               left: 29.h,
               child: SizedBox(
                 child: GifView.asset(
@@ -329,7 +329,7 @@ class _Scene4State extends State<Scene4> {
                 ),
               )),
           Positioned(
-              top: 45.h,
+              bottom: 0,
               left: 25.h,
               child: SizedBox(
                 child: GifView.asset(

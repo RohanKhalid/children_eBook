@@ -247,7 +247,7 @@ class _Scene2State extends State<Scene2> {
           ),
           Positioned(
             top: 21.h,
-            left: 16.w,
+            left: 60,
             child: SizedBox(
               height: 20.h,
               child: GifView.asset(
@@ -261,7 +261,7 @@ class _Scene2State extends State<Scene2> {
 
           Positioned(
               top: 25.h,
-              left: 14.w,
+              left: 50,
               child: SizedBox(
                 child: GifView.asset(
                   'assets/hmong_dwab_gif/logs.gif', // Replace with your .gif file path
@@ -285,7 +285,7 @@ class _Scene2State extends State<Scene2> {
               )),
 
           Positioned(
-              top: 39.h,
+              bottom: 5,
               right: 12.w,
               child: SizedBox(
                 child: GifView.asset(

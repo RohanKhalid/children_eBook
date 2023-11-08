@@ -265,7 +265,7 @@ class _SceneD3State extends State<SceneD3> {
           ),
 
           Positioned(
-              top: 33.5.h,
+              bottom: 0,
               left: 5.w,
               child: SizedBox(
                 child: GifView.asset(
@@ -290,7 +290,7 @@ class _SceneD3State extends State<SceneD3> {
               )),
 
           Positioned(
-              top: 28.h,
+              bottom: 0,
               left: 122.w,
               child: SizedBox(
                 child: GifView.asset(
@@ -314,7 +314,7 @@ class _SceneD3State extends State<SceneD3> {
                 ),
               )),
           Positioned(
-              bottom: 10,
+              bottom: 20,
               left: 29.h,
               child: SizedBox(
                 child: GifView.asset(
@@ -326,7 +326,7 @@ class _SceneD3State extends State<SceneD3> {
                 ),
               )),
           Positioned(
-              top: 45.h,
+              bottom: 0,
               left: 29.h,
               child: SizedBox(
                 child: GifView.asset(

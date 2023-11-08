@@ -220,26 +220,25 @@ class _SceneD4State extends State<SceneD4> {
             child: Wrap(
               alignment: WrapAlignment.center,
               children: [
-                for (int i = 0; i < words.length; i++)
-                  RichText(
-                    text: TextSpan(
-                      children: List.generate(
-                        words.length,
-                        (i) {
-                          final isHighlighted = i <= currentWordIndex;
-                          return TextSpan(
-                            text: '${words[i]} ',
-                            style: TextStyle(
-                              color: isHighlighted ? textColor : Colors.black,
-                              fontFamily: 'TimesNewRoman',
-                              fontSize: 22,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          );
-                        },
-                      ),
+                RichText(
+                  text: TextSpan(
+                    children: List.generate(
+                      words.length,
+                      (i) {
+                        final isHighlighted = i <= currentWordIndex;
+                        return TextSpan(
+                          text: '${words[i]} ',
+                          style: TextStyle(
+                            color: isHighlighted ? textColor : Colors.black,
+                            fontFamily: 'TimesNewRoman',
+                            fontSize: 22,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        );
+                      },
                     ),
                   ),
+                ),
               ],
             ),
           ),
@@ -254,19 +253,19 @@ class _SceneD4State extends State<SceneD4> {
             height: double.infinity,
             fit: BoxFit.fill,
           ),
-          // Positioned(
-          //   top: 32.h,
-          //   right: 20.w,
-          //   child: SizedBox(
-          //     child: GifView.asset(
-          //       'assets/hmong_dwab_gif/bird2.gif', // Replace with your .gif file path
-          //       controller: _gifControllerBird2,
-          //       height: 5.h,
-          //       repeat:
-          //           ImageRepeat.noRepeat, // Set whether the GIF should repeat
-          //     ),
-          //   ),
-          // ),
+          Positioned(
+            top: 32.h,
+            right: 20.w,
+            child: SizedBox(
+              child: GifView.asset(
+                'assets/hmong_dwab_gif/bird2.gif', // Replace with your .gif file path
+                controller: _gifControllerBird2,
+                height: 5.h,
+                repeat:
+                    ImageRepeat.noRepeat, // Set whether the GIF should repeat
+              ),
+            ),
+          ),
 
           Positioned(
               top: 22.h,
@@ -306,7 +305,7 @@ class _SceneD4State extends State<SceneD4> {
                 ),
               )),
           Positioned(
-              top: 35.h,
+              bottom: 0,
               left: 20.h,
               child: SizedBox(
                 child: GifView.asset(
@@ -318,7 +317,7 @@ class _SceneD4State extends State<SceneD4> {
                 ),
               )),
           Positioned(
-              top: 44.h,
+              bottom: 10,
               left: 29.h,
               child: SizedBox(
                 child: GifView.asset(
@@ -330,7 +329,7 @@ class _SceneD4State extends State<SceneD4> {
                 ),
               )),
           Positioned(
-              top: 45.h,
+              bottom: 0,
               left: 25.h,
               child: SizedBox(
                 child: GifView.asset(

@@ -90,7 +90,7 @@ class _SceneendDState extends State<SceneendD> {
               )),
           Positioned(
               top: 13.h,
-              right: 50.h,
+              left: 65.w,
               child: SizedBox(
                 child: GifView.asset(
                   'assets/hmong_dwab_gif/end_2.gif', // Replace with your .gif file path

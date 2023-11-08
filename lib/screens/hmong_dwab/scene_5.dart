@@ -241,7 +241,7 @@ class _SceneD5State extends State<SceneD5> {
           ),
 
           Positioned(
-              top: 34.h,
+              bottom: -10,
               right: 57.h,
               child: SizedBox(
                 child: GifView.asset(
