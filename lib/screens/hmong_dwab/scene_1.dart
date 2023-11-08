@@ -21,8 +21,7 @@ class SceneD1 extends StatefulWidget {
 
 class _SceneD1State extends State<SceneD1> {
   AudioPlayer audioPlayer = AudioPlayer(); // Create an instance of AudioPlayer
-  AudioPlayer backgroundAudioPlayer =
-      AudioPlayer(); // Audio player for the background track
+  AudioPlayer backgroundAudioPlayer = AudioPlayer(); // Audio player for the background track
   final GifController _gifControllerCowGirl = GifController();
   final GifController _gifControllerCow = GifController();
   bool isPlaying = false;
@@ -48,15 +47,13 @@ class _SceneD1State extends State<SceneD1> {
 
   @override
   void initState() {
-    SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
-        overlays: [SystemUiOverlay.bottom]);
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: [SystemUiOverlay.bottom]);
     super.initState();
 
     // Initialize the audio players
 
     // Play the current audio track
     playAudio('hmong_dwab_audio/scene_1.m4a');
-
     playBackgroundAudio('background_audio/scene_1.mp3');
     backgroundAudioPlayer.setReleaseMode(ReleaseMode.loop);
 
@@ -201,23 +198,13 @@ class _SceneD1State extends State<SceneD1> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                RichText(
-                  text: TextSpan(
-                    children: List.generate(
-                      words.length,
-                      (i) {
-                        final isHighlighted = i <= currentWordIndex;
-                        return TextSpan(
-                          text: '${words[i]} ',
-                          style: TextStyle(
-                            color: isHighlighted ? textColor : Colors.black,
-                            fontFamily: 'TimesNewRoman',
-                            fontSize: 22,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        );
-                      },
-                    ),
+                for (int i = 0; i < words.length; i++)
+                  Text('${words[i]} ',
+                    style: TextStyle(
+                        color: i == currentWordIndex ? textColor : Colors.black,
+                        fontFamily: 'TimesNewRoman',
+                        fontSize: 22,
+                        fontWeight: FontWeight.w600),
                   ),
                 ),
               ],
@@ -339,7 +326,7 @@ class _SceneD1State extends State<SceneD1> {
             ),
           ),
           Padding(
-            padding: EdgeInsets.only(top: 100.0, left: screenWidth * 0.5),
+            padding: EdgeInsets.only(top: 80.0, left: screenWidth * 0.5),
             child: GestureDetector(
               onTap: () {
                 if (isPlaying) {
@@ -355,42 +342,10 @@ class _SceneD1State extends State<SceneD1> {
                 });
               },
               child: isGifPlaying
-                  ? Image.asset(
-                      'assets/hmong_dwab/pause.png',
-                      height: 50,
-                      width: 50,
-                    )
-                  : Image.asset(
-                      'assets/hmong_dwab/play.png',
-                      height: 50,
-                      width: 50,
-                    ),
+                  ? Image.asset('assets/hmong_dwab/pause.png')
+                  : Image.asset('assets/hmong_dwab/play.png'),
             ),
           ),
-          if (!isGifPlaying)
-            isPlaying
-                ? Container() // An empty container to make the restart button disappear
-                : Positioned(
-                    top: 100,
-                    right: screenWidth * 0.1,
-                    child: GestureDetector(
-                      onTap: () {
-                        // Restart the audio and text from 0 index here
-                        startAudioFromBeginning('hmong_dwab_audio/scene_1.m4a');
-                        playBackgroundAudio('background_audio/scene_1.mp3');
-                        toggleGif(); // Toggle the GIF state
-                        setState(() {
-                          isPlaying = true;
-                        });
-                      },
-                      child: Image.asset(
-                        'assets/hmong_dwab/replay.png',
-                        height: 50,
-                        width: 50,
-                      ),
-                      // Replace with your restart button image
-                    ),
-                  ),
         ],
       ),
     );
