@@ -93,6 +93,29 @@ class _Scene6State extends State<Scene6> {
     }
   }
 
+  // Function to start audio from the beginning
+  Future<void> startAudioFromBeginning(String audioPath) async {
+    audioPosition = Duration.zero; // Reset audio position
+    currentWordIndex = 0; // Reset the text highlight index
+    updateTextColor(); // Update text color based on the reset values
+    if (isPlaying) {
+      audioPlayer.pause(); // Pause the audio
+      await audioPlayer.seek(Duration(milliseconds: 0)); // Seek to the start
+      await audioPlayer.resume(); // Resume the audio
+      setState(() {
+        isPlaying = true;
+      });
+    } else {
+      await audioPlayer.seek(Duration(milliseconds: 0)); // Seek to the start
+      await audioPlayer.play(
+        AssetSource(audioPath),
+      );
+      setState(() {
+        isPlaying = true;
+      });
+    }
+  }
+
   // Function to play the background audio track
   Future<void> playBackgroundAudio(String backgroundAudioPath) async {
     if (isPlaying) {
@@ -163,6 +186,7 @@ class _Scene6State extends State<Scene6> {
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
+        automaticallyImplyLeading: false, // Disable the back arrow
         forceMaterialTransparency: true,
         toolbarHeight: 80,
         centerTitle: true,
@@ -179,16 +203,25 @@ class _Scene6State extends State<Scene6> {
             child: Wrap(
               alignment: WrapAlignment.center,
               children: [
-                for (int i = 0; i < words.length; i++)
-                  Text(
-                    '${words[i]} ',
-                    maxLines: 2,
-                    style: TextStyle(
-                        color: i == currentWordIndex ? textColor : Colors.black,
-                        fontFamily: 'TimesNewRoman',
-                        fontSize: 22,
-                        fontWeight: FontWeight.w600),
+                RichText(
+                  text: TextSpan(
+                    children: List.generate(
+                      words.length,
+                      (i) {
+                        final isHighlighted = i <= currentWordIndex;
+                        return TextSpan(
+                          text: '${words[i]} ',
+                          style: TextStyle(
+                            color: isHighlighted ? textColor : Colors.black,
+                            fontFamily: 'TimesNewRoman',
+                            fontSize: 22,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        );
+                      },
+                    ),
                   ),
+                ),
               ],
             ),
           ),
@@ -303,15 +336,15 @@ class _Scene6State extends State<Scene6> {
             ),
           ),
           Padding(
-            padding: EdgeInsets.only(top: 80.0, left: screenWidth * 0.5),
+            padding: EdgeInsets.only(top: 100.0, left: screenWidth * 0.5),
             child: GestureDetector(
               onTap: () {
                 if (isPlaying) {
                   stopAudio();
                   stopBackgroundAudio();
                 } else {
-                  playAudio('hmong_dwab_audio/scene_1.m4a');
-                  playBackgroundAudio('background_audio/scene_1.mp3');
+                  playAudio('hmong_ntsuab_audio/scene_6.m4a');
+                  playBackgroundAudio('background_audio/scene_6.mp3');
                 }
                 toggleGif();
                 setState(() {
@@ -319,10 +352,43 @@ class _Scene6State extends State<Scene6> {
                 });
               },
               child: isGifPlaying
-                  ? Image.asset('assets/hmong_dwab/pause.png')
-                  : Image.asset('assets/hmong_dwab/play.png'),
+                  ? Image.asset(
+                      'assets/hmong_dwab/pause.png',
+                      height: 50,
+                      width: 50,
+                    )
+                  : Image.asset(
+                      'assets/hmong_dwab/play.png',
+                      height: 50,
+                      width: 50,
+                    ),
             ),
           ),
+          if (!isGifPlaying)
+            isPlaying
+                ? Container() // An empty container to make the restart button disappear
+                : Positioned(
+                    top: 100,
+                    right: screenWidth * 0.1,
+                    child: GestureDetector(
+                      onTap: () {
+                        // Restart the audio and text from 0 index here
+                        startAudioFromBeginning(
+                            'hmong_ntsuab_audio/scene_6.m4a');
+                        playBackgroundAudio('background_audio/scene_6.mp3');
+                        toggleGif(); // Toggle the GIF state
+                        setState(() {
+                          isPlaying = true;
+                        });
+                      },
+                      child: Image.asset(
+                        'assets/hmong_dwab/replay.png',
+                        height: 50,
+                        width: 50,
+                      ),
+                      // Replace with your restart button image
+                    ),
+                  ),
         ],
       ),
     );

@@ -90,6 +90,29 @@ class _SceneD1State extends State<SceneD1> {
     }
   }
 
+  // Function to start audio from the beginning
+  Future<void> startAudioFromBeginning(String audioPath) async {
+    audioPosition = Duration.zero; // Reset audio position
+    currentWordIndex = 0; // Reset the text highlight index
+    updateTextColor(); // Update text color based on the reset values
+    if (isPlaying) {
+      audioPlayer.pause(); // Pause the audio
+      await audioPlayer.seek(Duration(milliseconds: 0)); // Seek to the start
+      await audioPlayer.resume(); // Resume the audio
+      setState(() {
+        isPlaying = true;
+      });
+    } else {
+      await audioPlayer.seek(Duration(milliseconds: 0)); // Seek to the start
+      await audioPlayer.play(
+        AssetSource(audioPath),
+      );
+      setState(() {
+        isPlaying = true;
+      });
+    }
+  }
+
   // Function to play the background audio track
   Future<void> playBackgroundAudio(String backgroundAudioPath) async {
     if (isPlaying) {
@@ -158,6 +181,7 @@ class _SceneD1State extends State<SceneD1> {
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
+        automaticallyImplyLeading: false, // Disable the back arrow
         forceMaterialTransparency: true,
         centerTitle: true,
         toolbarHeight: 80,
@@ -182,6 +206,7 @@ class _SceneD1State extends State<SceneD1> {
                         fontSize: 22,
                         fontWeight: FontWeight.w600),
                   ),
+                ),
               ],
             ),
           ),

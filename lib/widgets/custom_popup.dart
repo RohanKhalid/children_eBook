@@ -2,7 +2,6 @@
 
 import 'package:ebook/animations/forward_page_animation.dart';
 import 'package:ebook/screens/hmong_dwab/scene_1.dart';
-
 import 'package:ebook/screens/hmong_ntsuab/scene_1.dart';
 import 'package:flutter/material.dart';
 
@@ -55,14 +54,15 @@ class _CustomPopupState extends State<CustomPopup> {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
                         Padding(
                           padding: EdgeInsets.only(
-                              right: screenHeight * 0.08,
+                              right: screenHeight * 0.12,
                               top: screenHeight * 0.03),
                           child: Container(
-                            height: 35,
+                            height: 40,
                             width: 155,
                             decoration: BoxDecoration(
                               color: const Color(
@@ -70,19 +70,35 @@ class _CustomPopupState extends State<CustomPopup> {
                               borderRadius: BorderRadius.circular(
                                   6), // Define the border radius
                             ),
-                            child: const Center(child: Text('Select Language')),
+                            child: const Center(
+                                child: Text(
+                              'Select Language',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w400, fontSize: 16),
+                            )),
                           ),
                         ),
-                        IconButton(
-                          icon: const Icon(
-                            Icons.close,
-                            color: Colors.white,
-                            // Icon color (white)
-                          ),
-                          onPressed: () {
-                            Navigator.of(context).pop();
-                          },
-                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(right: 15),
+                          child: SizedBox(
+                              height: 18,
+                              width: 18,
+                              child: ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.black,
+                                  padding: EdgeInsets.zero,
+                                  shape: const RoundedRectangleBorder(),
+                                ),
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                },
+                                child: const Icon(
+                                  Icons.close,
+                                  color: Colors.white,
+                                  size: 17,
+                                ),
+                              )),
+                        )
                       ],
                     ),
                     const SizedBox(
@@ -114,7 +130,9 @@ class _CustomPopupState extends State<CustomPopup> {
                           child: const Text(
                             'Hmong Ntsuab',
                             style: TextStyle(
-                                fontSize: 18, fontWeight: FontWeight.bold),
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white),
                           ),
                         ),
                         ElevatedButton(
@@ -135,12 +153,14 @@ class _CustomPopupState extends State<CustomPopup> {
                               ),
                             ),
                             minimumSize:
-                                const Size(159, 41), // Width and height
+                                const Size(170, 41), // Width and height
                           ),
                           child: const Text(
                             'Hmong Dawb',
                             style: TextStyle(
-                                fontSize: 18, fontWeight: FontWeight.bold),
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white),
                           ),
                         ),
                       ],
