@@ -21,8 +21,7 @@ class SceneD1 extends StatefulWidget {
 
 class _SceneD1State extends State<SceneD1> {
   AudioPlayer audioPlayer = AudioPlayer(); // Create an instance of AudioPlayer
-  AudioPlayer backgroundAudioPlayer =
-      AudioPlayer(); // Audio player for the background track
+  AudioPlayer backgroundAudioPlayer = AudioPlayer(); // Audio player for the background track
   final GifController _gifControllerCowGirl = GifController();
   final GifController _gifControllerCow = GifController();
   bool isPlaying = false;
@@ -48,15 +47,13 @@ class _SceneD1State extends State<SceneD1> {
 
   @override
   void initState() {
-    SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
-        overlays: [SystemUiOverlay.bottom]);
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: [SystemUiOverlay.bottom]);
     super.initState();
 
     // Initialize the audio players
 
     // Play the current audio track
     playAudio('hmong_dwab_audio/scene_1.m4a');
-
     playBackgroundAudio('background_audio/scene_1.mp3');
     backgroundAudioPlayer.setReleaseMode(ReleaseMode.loop);
 
@@ -178,8 +175,7 @@ class _SceneD1State extends State<SceneD1> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 for (int i = 0; i < words.length; i++)
-                  Text(
-                    '${words[i]} ',
+                  Text('${words[i]} ',
                     style: TextStyle(
                         color: i == currentWordIndex ? textColor : Colors.black,
                         fontFamily: 'TimesNewRoman',
