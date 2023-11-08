@@ -4,6 +4,8 @@ import 'package:audioplayers/audioplayers.dart';
 import 'package:ebook/screens/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:gif_view/gif_view.dart';
+import 'package:sizer/sizer.dart';
 
 class SceneendD extends StatefulWidget {
   const SceneendD({Key? key}) : super(key: key);
@@ -15,6 +17,10 @@ class SceneendD extends StatefulWidget {
 class _SceneendDState extends State<SceneendD> {
   late AudioPlayer
       backgroundAudioPlayer; // Audio player for the background track
+  final GifController _gifControllerSceneEnd_1 = GifController();
+  final GifController _gifControllerSceneEnd_2 = GifController();
+  final GifController _gifControllerEnd_3 = GifController();
+  final GifController _gifControllerEnd_4 = GifController();
 
   @override
   void initState() {
@@ -25,18 +31,18 @@ class _SceneendDState extends State<SceneendD> {
 
     // Initialize the audio players
 
-    backgroundAudioPlayer = AudioPlayer();
+    //   backgroundAudioPlayer = AudioPlayer();
 
-    // Play the background audio track and set it to loop continuously
-    playBackgroundAudio('background_audio/scene_end.mp3');
-    backgroundAudioPlayer.setReleaseMode(ReleaseMode.loop);
-  }
+    //   // Play the background audio track and set it to loop continuously
+    //   playBackgroundAudio('background_audio/scene_end.mp3');
+    //   backgroundAudioPlayer.setReleaseMode(ReleaseMode.loop);
+    // }
 
-  // Function to play the background audio track
-  Future<void> playBackgroundAudio(String backgroundAudioPath) async {
-    await backgroundAudioPlayer.play(
-      AssetSource(backgroundAudioPath),
-    );
+    // // Function to play the background audio track
+    // Future<void> playBackgroundAudio(String backgroundAudioPath) async {
+    //   await backgroundAudioPlayer.play(
+    //     AssetSource(backgroundAudioPath),
+    //   );
   }
 
   // Function to stop the background audio track
@@ -47,7 +53,10 @@ class _SceneendDState extends State<SceneendD> {
   @override
   void dispose() {
     // Dispose of the audioPlayer when the widget is disposed
-
+    _gifControllerSceneEnd_1.dispose();
+    _gifControllerSceneEnd_2.dispose();
+    _gifControllerEnd_3.dispose();
+    _gifControllerEnd_4.dispose();
     backgroundAudioPlayer.dispose();
     super.dispose();
   }
@@ -62,11 +71,60 @@ class _SceneendDState extends State<SceneendD> {
         children: [
           // Background Image
           Image.asset(
-            'assets/hmong_ntsuab/scene_end.png',
+            'assets/hmong_dwab/scene_end.png',
             width: double.infinity,
             height: double.infinity,
             fit: BoxFit.fill,
           ),
+          Positioned(
+              top: 5.h,
+              left: 5.w,
+              child: SizedBox(
+                child: GifView.asset(
+                  'assets/hmong_dwab_gif/end_1.gif', // Replace with your .gif file path
+                  height: 25.h,
+                  controller: _gifControllerSceneEnd_1,
+                  repeat:
+                      ImageRepeat.noRepeat, // Set whether the GIF should repeat
+                ),
+              )),
+          Positioned(
+              top: 13.h,
+              right: 50.h,
+              child: SizedBox(
+                child: GifView.asset(
+                  'assets/hmong_dwab_gif/end_2.gif', // Replace with your .gif file path
+                  height: 20.h,
+                  controller: _gifControllerSceneEnd_2,
+                  repeat:
+                      ImageRepeat.noRepeat, // Set whether the GIF should repeat
+                ),
+              )),
+
+          Positioned(
+              bottom: 15.h,
+              right: 20.w,
+              child: SizedBox(
+                child: GifView.asset(
+                  'assets/hmong_dwab_gif/scene_3.2.gif', // Replace with your .gif file path
+                  height: 30.h,
+                  controller: _gifControllerEnd_3,
+                  repeat:
+                      ImageRepeat.noRepeat, // Set whether the GIF should repeat
+                ),
+              )),
+          Positioned(
+              top: 5.h,
+              right: 3.w,
+              child: SizedBox(
+                child: GifView.asset(
+                  'assets/hmong_dwab_gif/end_4.gif', // Replace with your .gif file path
+                  height: 25.h,
+                  controller: _gifControllerEnd_4,
+                  repeat:
+                      ImageRepeat.noRepeat, // Set whether the GIF should repeat
+                ),
+              )),
           Positioned(
             bottom: screenHeight * 0.07,
             left: screenHeight * 0.725,

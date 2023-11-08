@@ -101,8 +101,8 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
             ),
             Positioned(
-              bottom: screenHeight * 0.125,
-              left: screenHeight * 0.8,
+              bottom: screenHeight * 0.075,
+              left: screenWidth / 2 * 0.74,
               child: InkWell(
                 onTap: () {
                   setState(() {
@@ -116,8 +116,10 @@ class _HomeScreenState extends State<HomeScreen> {
                   ).then((_) =>
                       playBackgroundAudio('background_audio/scene_intro.mp3'));
                 },
-                child: const Text('Start Reading',
-                    style: TextStyle(fontSize: 24, color: Colors.white)),
+                child: Container(
+                  height: 65,
+                  width: 200,
+                ),
               ),
             ),
             Positioned(
