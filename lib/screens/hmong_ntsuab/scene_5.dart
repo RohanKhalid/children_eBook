@@ -148,7 +148,7 @@ class _Scene5State extends State<Scene5> {
   void updateTextColor() {
     double progress = audioPosition.inSeconds / audioDuration;
 
-    if (currentWordIndex < words.length &&
+    while (currentWordIndex < words.length &&
         progress >= (currentWordIndex + 1) / words.length) {
       currentWordIndex++;
       textColor = targetColor;

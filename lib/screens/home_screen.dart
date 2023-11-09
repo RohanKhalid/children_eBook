@@ -30,7 +30,7 @@ class _HomeScreenState extends State<HomeScreen> {
         overlays: [SystemUiOverlay.bottom]);
     super.initState();
     playBackgroundAudio('background_audio/scene_intro.mp3');
-    // backgroundAudioPlayer.setReleaseMode(ReleaseMode.loop);
+    backgroundAudioPlayer.setReleaseMode(ReleaseMode.loop);
   }
 
   // Function to play the background audio track
@@ -59,6 +59,9 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void dispose() {
     backgroundAudioPlayer.dispose();
+    _gifControllerBird.dispose();
+    _gifControllerGirl.dispose();
+    _gifControllerHen.dispose();
     super.dispose();
   }
 

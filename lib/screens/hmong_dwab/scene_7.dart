@@ -152,7 +152,7 @@ class _SceneD7State extends State<SceneD7> {
   void updateTextColor() {
     double progress = audioPosition.inSeconds / audioDuration;
 
-    if (currentWordIndex < words.length &&
+    while (currentWordIndex < words.length &&
         progress >= (currentWordIndex + 1) / words.length) {
       currentWordIndex++;
       textColor = targetColor;

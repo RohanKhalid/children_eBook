@@ -31,18 +31,18 @@ class _SceneendDState extends State<SceneendD> {
 
     // Initialize the audio players
 
-    //   backgroundAudioPlayer = AudioPlayer();
+    backgroundAudioPlayer = AudioPlayer();
 
-    //   // Play the background audio track and set it to loop continuously
-    //   playBackgroundAudio('background_audio/scene_end.mp3');
-    //   backgroundAudioPlayer.setReleaseMode(ReleaseMode.loop);
-    // }
+    // Play the background audio track and set it to loop continuously
+    playBackgroundAudio('background_audio/scene_end.mp3');
+    backgroundAudioPlayer.setReleaseMode(ReleaseMode.loop);
+  }
 
-    // // Function to play the background audio track
-    // Future<void> playBackgroundAudio(String backgroundAudioPath) async {
-    //   await backgroundAudioPlayer.play(
-    //     AssetSource(backgroundAudioPath),
-    //   );
+  // Function to play the background audio track
+  Future<void> playBackgroundAudio(String backgroundAudioPath) async {
+    await backgroundAudioPlayer.play(
+      AssetSource(backgroundAudioPath),
+    );
   }
 
   // Function to stop the background audio track
