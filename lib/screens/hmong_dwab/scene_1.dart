@@ -42,7 +42,7 @@ class _SceneD1State extends State<SceneD1> {
     'liaj',
     'ua',
     'teb',
-    ' noj.'
+    'noj.'
   ];
   int currentWordIndex = 0;
 
@@ -61,7 +61,7 @@ class _SceneD1State extends State<SceneD1> {
 
     audioPlayer.onDurationChanged.listen((Duration duration) {
       setState(() {
-        audioDuration = duration.inSeconds; // Get the audio duration
+        audioDuration = duration.inMilliseconds; // Get the audio duration
       });
     });
 
@@ -145,12 +145,13 @@ class _SceneD1State extends State<SceneD1> {
   }
 
   void updateTextColor() {
-    double progress = audioPosition.inSeconds / audioDuration;
-
-    while (currentWordIndex < words.length &&
-        progress >= (currentWordIndex + 1) / words.length) {
-      currentWordIndex++;
-      textColor = targetColor;
+    double progress = audioPosition.inMilliseconds / audioDuration;
+    int newSegmentIndex = (progress * words.length).floor();
+    if (newSegmentIndex < words.length && newSegmentIndex != currentWordIndex) {
+      setState(() {
+        currentWordIndex = newSegmentIndex;
+        textColor = targetColor;
+      });
     }
   }
 
