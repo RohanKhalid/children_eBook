@@ -53,10 +53,6 @@ class _SceneD7State extends State<SceneD7> {
   void initState() {
     super.initState();
 
-    // Initialize the audio players
-    audioPlayer = AudioPlayer();
-    backgroundAudioPlayer = AudioPlayer();
-
     // Play the current audio track
     playAudio('hmong_dwab_audio/scene_7.m4a');
 

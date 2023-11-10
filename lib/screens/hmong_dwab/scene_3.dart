@@ -56,7 +56,6 @@ class _SceneD3State extends State<SceneD3> {
   @override
   void initState() {
     super.initState();
-
     // Play the current audio track
     playAudio('hmong_dwab_audio/scene_3.m4a');
 

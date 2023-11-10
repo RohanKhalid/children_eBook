@@ -46,12 +46,9 @@ class _Scene1State extends State<Scene1> {
 
   @override
   void initState() {
+    super.initState();
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
         overlays: [SystemUiOverlay.bottom]);
-    super.initState();
-
-    // Initialize the audio players
-
     // Play the current audio track
     playAudio('hmong_ntsuab_audio/scene_1.m4a');
 

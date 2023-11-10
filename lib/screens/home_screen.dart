@@ -26,9 +26,9 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   void initState() {
+    super.initState();
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
         overlays: [SystemUiOverlay.bottom]);
-    super.initState();
     playBackgroundAudio('background_audio/scene_intro.mp3');
     backgroundAudioPlayer.setReleaseMode(ReleaseMode.loop);
   }

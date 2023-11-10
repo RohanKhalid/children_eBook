@@ -16,7 +16,7 @@ class SceneendD extends StatefulWidget {
 
 class _SceneendDState extends State<SceneendD> {
   late AudioPlayer
-      backgroundAudioPlayer; // Audio player for the background track
+      backgroundAudioPlayer = AudioPlayer(); // Audio player for the background track
   final GifController _gifControllerSceneEnd_1 = GifController();
   final GifController _gifControllerSceneEnd_2 = GifController();
   final GifController _gifControllerEnd_3 = GifController();
@@ -24,14 +24,12 @@ class _SceneendDState extends State<SceneendD> {
 
   @override
   void initState() {
+    
+    super.initState();
     SystemChrome.setPreferredOrientations([DeviceOrientation.landscapeLeft]);
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
         overlays: [SystemUiOverlay.bottom]);
-    super.initState();
-
-    // Initialize the audio players
-
-    backgroundAudioPlayer = AudioPlayer();
+    
 
     // Play the background audio track and set it to loop continuously
     playBackgroundAudio('background_audio/scene_end.mp3');

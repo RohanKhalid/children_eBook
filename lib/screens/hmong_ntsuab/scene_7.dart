@@ -53,11 +53,6 @@ class _Scene7State extends State<Scene7> {
   @override
   void initState() {
     super.initState();
-
-    // Initialize the audio players
-    audioPlayer = AudioPlayer();
-    backgroundAudioPlayer = AudioPlayer();
-
     // Play the current audio track
     playAudio('hmong_ntsuab_audio/scene_7.m4a');
 
