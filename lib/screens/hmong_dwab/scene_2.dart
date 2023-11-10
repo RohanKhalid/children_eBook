@@ -51,7 +51,7 @@ class _SceneD2State extends State<SceneD2> {
     'pub',
     'npua.',
   ];
-  int currentWordIndex = 0;
+  int currentWordIndex = -1;
 
   @override
   void initState() {

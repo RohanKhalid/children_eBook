@@ -52,7 +52,7 @@ class _Scene4State extends State<Scene4> {
     'pob',
     'zeb.',
   ];
-  int currentWordIndex = 0;
+  int currentWordIndex = -1;
   @override
   void initState() {
     super.initState();

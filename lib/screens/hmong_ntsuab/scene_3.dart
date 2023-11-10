@@ -51,7 +51,7 @@ class _Scene3State extends State<Scene3> {
     'tuj',
     'lub.',
   ];
-  int currentWordIndex = 0;
+  int currentWordIndex = -1;
 
   @override
   void initState() {

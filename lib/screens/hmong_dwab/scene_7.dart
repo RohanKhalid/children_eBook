@@ -47,7 +47,7 @@ class _SceneD7State extends State<SceneD7> {
     'mov',
     'moj.',
   ];
-  int currentWordIndex = 0;
+  int currentWordIndex = -1;
 
   @override
   void initState() {

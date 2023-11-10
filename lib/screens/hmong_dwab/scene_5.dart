@@ -47,7 +47,7 @@ class _SceneD5State extends State<SceneD5> {
     'tsho',
     'hnav.',
   ];
-  int currentWordIndex = 0;
+  int currentWordIndex = -1;
   @override
   void initState() {
     super.initState();
