@@ -21,7 +21,7 @@ class Scene7 extends StatefulWidget {
 
 class _Scene7State extends State<Scene7> {
   final GifController _gifControllerScene7_1 = GifController();
-  final GifController _gifControllerScene7_2 = GifController();
+
   final GifController _gifControllerBird = GifController();
 
   late AudioPlayer audioPlayer =
@@ -160,11 +160,11 @@ class _Scene7State extends State<Scene7> {
     setState(() {
       if (isGifPlaying) {
         _gifControllerScene7_1.stop();
-        _gifControllerScene7_2.stop();
+        
         _gifControllerBird.stop();
       } else {
         _gifControllerScene7_1.play();
-        _gifControllerScene7_2.play();
+       
         _gifControllerBird.play();
       }
       isGifPlaying = !isGifPlaying;
@@ -178,7 +178,7 @@ class _Scene7State extends State<Scene7> {
     backgroundAudioPlayer.dispose();
 
     _gifControllerScene7_1.dispose();
-    _gifControllerScene7_2.dispose();
+   
     _gifControllerBird.dispose();
 
     super.dispose();
@@ -243,26 +243,14 @@ class _Scene7State extends State<Scene7> {
             fit: BoxFit.fill,
           ),
 
-          Positioned(
-              top: 18.h,
-              left: -15.w,
+         Positioned(
+              top: 17.h,
+              left: 25.w,
               child: SizedBox(
                 child: GifView.asset(
-                  'assets/hmong_dwab_gif/scene_7.1.gif', // Replace with your .gif file path
+                  'assets/hmong_dwab_gif/scene-7.gif', // Replace with your .gif file path
                   height: 30.h,
                   controller: _gifControllerScene7_1,
-                  repeat:
-                      ImageRepeat.noRepeat, // Set whether the GIF should repeat
-                ),
-              )),
-          Positioned(
-              top: 21.h,
-              left: 24.w,
-              child: SizedBox(
-                child: GifView.asset(
-                  'assets/hmong_dwab_gif/scene_7.2.gif', // Replace with your .gif file path
-                  height: 25.h,
-                  controller: _gifControllerScene7_2,
                   repeat:
                       ImageRepeat.noRepeat, // Set whether the GIF should repeat
                 ),

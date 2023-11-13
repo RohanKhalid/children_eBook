@@ -79,7 +79,7 @@ class _SceneendDState extends State<SceneendD> {
               left: 5.w,
               child: SizedBox(
                 child: GifView.asset(
-                  'assets/hmong_dwab_gif/end_1.gif', // Replace with your .gif file path
+                  'assets/hmong_dwab_gif/end_screen_3.gif', // Replace with your .gif file path
                   height: 25.h,
                   controller: _gifControllerSceneEnd_1,
                   repeat:
@@ -87,11 +87,11 @@ class _SceneendDState extends State<SceneendD> {
                 ),
               )),
           Positioned(
-              top: 13.h,
-              left: 65.w,
+              top: 15.h,
+              left: 68.w,
               child: SizedBox(
                 child: GifView.asset(
-                  'assets/hmong_dwab_gif/end_2.gif', // Replace with your .gif file path
+                  'assets/hmong_dwab_gif/end_screen_2.gif', // Replace with your .gif file path
                   height: 20.h,
                   controller: _gifControllerSceneEnd_2,
                   repeat:
@@ -100,11 +100,11 @@ class _SceneendDState extends State<SceneendD> {
               )),
 
           Positioned(
-              bottom: 15.h,
-              right: 20.w,
+              bottom: 12.h,
+              right: 50.w,
               child: SizedBox(
                 child: GifView.asset(
-                  'assets/hmong_dwab_gif/scene_3.2.gif', // Replace with your .gif file path
+                  'assets/hmong_dwab_gif/end_screen_1.gif', // Replace with your .gif file path
                   height: 30.h,
                   controller: _gifControllerEnd_3,
                   repeat:
@@ -113,10 +113,10 @@ class _SceneendDState extends State<SceneendD> {
               )),
           Positioned(
               top: 5.h,
-              right: 3.w,
+              right: 0,
               child: SizedBox(
                 child: GifView.asset(
-                  'assets/hmong_dwab_gif/end_4.gif', // Replace with your .gif file path
+                  'assets/hmong_dwab_gif/end_screen.gif', // Replace with your .gif file path
                   height: 25.h,
                   controller: _gifControllerEnd_4,
                   repeat:

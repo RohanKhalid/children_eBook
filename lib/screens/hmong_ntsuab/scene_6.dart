@@ -239,12 +239,12 @@ class _Scene6State extends State<Scene6> {
             fit: BoxFit.fill,
           ),
 
-          Positioned(
+         Positioned(
               top: 14.h,
-              right: 53.h,
+              left: 0,
               child: SizedBox(
                 child: GifView.asset(
-                  'assets/hmong_dwab_gif/scene_6.1.gif', // Replace with your .gif file path
+                  'assets/hmong_dwab_gif/scene-6.1.gif', // Replace with your .gif file path
                   height: 35.h,
                   controller: _gifControllerScene6_1,
                   repeat:
@@ -253,10 +253,10 @@ class _Scene6State extends State<Scene6> {
               )),
           Positioned(
               top: 20.h,
-              left: 100.w,
+              right: -12.w,
               child: SizedBox(
                 child: GifView.asset(
-                  'assets/hmong_dwab_gif/scene_6.2.gif', // Replace with your .gif file path
+                  'assets/hmong_dwab_gif/scene-6.2.gif', // Replace with your .gif file path
                   height: 40.h,
                   controller: _gifControllerScene6_2,
                   repeat:

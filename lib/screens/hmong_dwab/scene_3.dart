@@ -19,12 +19,9 @@ class SceneD3 extends StatefulWidget {
 }
 
 class _SceneD3State extends State<SceneD3> {
-  final GifController _gifControllerPigRight = GifController();
-  final GifController _gifControllerScene4_1 = GifController();
-  final GifController _gifControllerScene4_2 = GifController();
-  final GifController _gifControllerScene4_3 = GifController();
-  final GifController _gifControllerStones = GifController();
-  final GifController _gifControllerTop = GifController();
+  final GifController _gifControllerScene3_1 = GifController();
+  final GifController _gifControllerScene3_2 = GifController();
+
   late AudioPlayer audioPlayer =
       AudioPlayer(); // Create an instance of AudioPlayer
   late AudioPlayer backgroundAudioPlayer =
@@ -162,19 +159,11 @@ class _SceneD3State extends State<SceneD3> {
   toggleGif() {
     setState(() {
       if (isGifPlaying) {
-        _gifControllerPigRight.stop();
-        _gifControllerScene4_1.stop();
-        _gifControllerScene4_2.stop();
-        _gifControllerScene4_3.stop();
-        _gifControllerStones.stop();
-        _gifControllerTop.stop();
+        _gifControllerScene3_1.stop();
+        _gifControllerScene3_2.stop();
       } else {
-        _gifControllerPigRight.play();
-        _gifControllerScene4_1.play();
-        _gifControllerScene4_2.play();
-        _gifControllerScene4_3.play();
-        _gifControllerStones.play();
-        _gifControllerTop.play();
+        _gifControllerScene3_1.play();
+        _gifControllerScene3_2.play();
       }
       isGifPlaying = !isGifPlaying;
     });
@@ -185,12 +174,10 @@ class _SceneD3State extends State<SceneD3> {
     // Dispose of the audioPlayer when the widget is disposed
     audioPlayer.dispose();
     backgroundAudioPlayer.dispose();
-    _gifControllerPigRight.dispose();
-    _gifControllerScene4_1.dispose();
-    _gifControllerScene4_2.dispose();
-    _gifControllerScene4_3.dispose();
-    _gifControllerStones.dispose();
-    _gifControllerTop.dispose();
+
+    _gifControllerScene3_1.dispose();
+    _gifControllerScene3_2.dispose();
+
     super.dispose();
   }
 
@@ -252,105 +239,33 @@ class _SceneD3State extends State<SceneD3> {
             height: double.infinity,
             fit: BoxFit.fill,
           ),
-          Positioned(
-            top: 22.h,
-            left: 10.w,
-            child: SizedBox(
-              height: 10.h,
-              child: GifView.asset(
-                'assets/hmong_dwab_gif/pig_right.gif', // Replace with your .gif file path
-                controller: _gifControllerPigRight,
-                repeat:
-                    ImageRepeat.noRepeat, // Set whether the GIF should repeat
-              ),
-            ),
-          ),
 
           Positioned(
-              bottom: 0,
-              left: 5.w,
+              bottom: -2.h,
+              left: 40.w,
               child: SizedBox(
                 child: GifView.asset(
-                  'assets/hmong_dwab_gif/scene_4.1.gif', // Replace with your .gif file path
-                  height: 20.h,
-                  controller: _gifControllerScene4_1,
+                  'assets/hmong_dwab_gif/scene-3.1.gif', // Replace with your .gif file path
+                  height: 30.h,
+
+                  controller: _gifControllerScene3_1,
                   repeat:
                       ImageRepeat.noRepeat, // Set whether the GIF should repeat
                 ),
               )),
           Positioned(
-              top: 5.h,
-              right: 1.w,
+              top: 20.h,
+              right: 45.w,
               child: SizedBox(
                 child: GifView.asset(
-                  'assets/hmong_dwab_gif/scene_4.2.gif', // Replace with your .gif file path
-
-                  controller: _gifControllerScene4_2,
+                  'assets/hmong_dwab_gif/scene-3.2.gif', // Replace with your .gif file path
+                  height: 30.h,
+                  controller: _gifControllerScene3_2,
                   repeat:
                       ImageRepeat.noRepeat, // Set whether the GIF should repeat
                 ),
               )),
 
-          Positioned(
-              bottom: 0,
-              left: 122.w,
-              child: SizedBox(
-                child: GifView.asset(
-                  'assets/hmong_dwab_gif/scene_4.3.gif', // Replace with your .gif file path
-                  height: 25.h,
-                  controller: _gifControllerScene4_3,
-                  repeat:
-                      ImageRepeat.noRepeat, // Set whether the GIF should repeat
-                ),
-              )),
-          Positioned(
-              bottom: 1,
-              left: 25.h,
-              child: SizedBox(
-                child: GifView.asset(
-                  'assets/hmong_dwab_gif/stones.gif', // Replace with your .gif file path
-                  height: 8.h,
-                  controller: _gifControllerStones,
-                  repeat:
-                      ImageRepeat.noRepeat, // Set whether the GIF should repeat
-                ),
-              )),
-          Positioned(
-              bottom: 20,
-              left: 29.h,
-              child: SizedBox(
-                child: GifView.asset(
-                  'assets/hmong_dwab_gif/stones.gif', // Replace with your .gif file path
-                  height: 8.h,
-                  controller: _gifControllerStones,
-                  repeat:
-                      ImageRepeat.noRepeat, // Set whether the GIF should repeat
-                ),
-              )),
-          Positioned(
-              bottom: 0,
-              left: 29.h,
-              child: SizedBox(
-                child: GifView.asset(
-                  'assets/hmong_dwab_gif/stones.gif', // Replace with your .gif file path
-                  height: 8.h,
-                  controller: _gifControllerStones,
-                  repeat:
-                      ImageRepeat.noRepeat, // Set whether the GIF should repeat
-                ),
-              )),
-          Positioned(
-              top: 37.h,
-              left: 55.h,
-              child: SizedBox(
-                child: GifView.asset(
-                  'assets/hmong_dwab_gif/top.gif', // Replace with your .gif file path
-                  height: 5.h,
-                  controller: _gifControllerTop,
-                  repeat:
-                      ImageRepeat.noRepeat, // Set whether the GIF should repeat
-                ),
-              )),
           Positioned(
             top: screenHeight * 0.1,
             right: screenHeight * 0.7,
