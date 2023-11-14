@@ -18,13 +18,13 @@ class SceneD5 extends StatefulWidget {
   _SceneD5State createState() => _SceneD5State();
 }
 
-class _SceneD5State extends State<SceneD5> {
+class _SceneD5State extends State<SceneD5> with WidgetsBindingObserver {
   final GifController _gifControllerScene5_1 = GifController();
   final GifController _gifControllerScene5_2 = GifController();
-
-  late AudioPlayer audioPlayer =
+  static const MethodChannel _channel = MethodChannel('Scene_D5');
+  static AudioPlayer audioPlayer =
       AudioPlayer(); // Create an instance of AudioPlayer
-  late AudioPlayer backgroundAudioPlayer =
+  static AudioPlayer backgroundAudioPlayer =
       AudioPlayer(); // Audio player for the background track
   bool isPlaying = false;
   Duration audioPosition = Duration.zero;
@@ -50,6 +50,7 @@ class _SceneD5State extends State<SceneD5> {
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
     // Play the current audio track
     playAudio('hmong_dwab_audio/scene_5.m4a');
 
@@ -69,6 +70,16 @@ class _SceneD5State extends State<SceneD5> {
         updateTextColor();
       });
     });
+  }
+
+  // Call this method to pause or stop the music when the screen is locked.
+  Future<void> pauseMusicOnLockScreen() async {
+    try {
+      await _channel.invokeMethod('pauseMusic');
+    } on PlatformException catch (e) {
+      print('$e');
+      // Handle the error.
+    }
   }
 
   // Function to play the current audio track
@@ -140,6 +151,7 @@ class _SceneD5State extends State<SceneD5> {
   // Function to stop the background audio track
   Future<void> stopBackgroundAudio() async {
     await backgroundAudioPlayer.stop();
+    await backgroundAudioPlayer.release();
   }
 
   void updateTextColor() {
@@ -167,7 +179,19 @@ class _SceneD5State extends State<SceneD5> {
   }
 
   @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.paused) {
+      backgroundAudioPlayer.pause();
+      audioPlayer.pause();
+    } else if (state == AppLifecycleState.resumed) {
+      backgroundAudioPlayer.resume();
+      audioPlayer.resume();
+    }
+  }
+
+  @override
   void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
     // Dispose of the audioPlayer when the widget is disposed
     audioPlayer.dispose();
     backgroundAudioPlayer.dispose();
@@ -279,6 +303,7 @@ class _SceneD5State extends State<SceneD5> {
               onTap: () {
                 stopAudio();
                 stopBackgroundAudio(); // Stop the background audio track
+
                 Navigator.of(context).push(
                   MaterialPageRoute(
                     builder: (context) => const HomeScreen(),
@@ -300,6 +325,7 @@ class _SceneD5State extends State<SceneD5> {
               onTap: () {
                 stopAudio();
                 stopBackgroundAudio(); // Stop the background audio track
+
                 Navigator.of(context).push(
                   SlideRightPageRoute(
                     page: const SceneD6(),
@@ -321,6 +347,7 @@ class _SceneD5State extends State<SceneD5> {
               onTap: () {
                 stopAudio();
                 stopBackgroundAudio(); // Stop the background audio track
+
                 Navigator.of(context).push(
                   SlideRightPageRouteB(
                     page: const SceneD4(),

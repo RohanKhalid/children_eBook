@@ -18,13 +18,13 @@ class SceneD2 extends StatefulWidget {
   _SceneD2State createState() => _SceneD2State();
 }
 
-class _SceneD2State extends State<SceneD2> {
+class _SceneD2State extends State<SceneD2> with WidgetsBindingObserver {
   final GifController _gifControllerAxeBoy = GifController();
   final GifController _gifControllerPigGirl = GifController();
-
-  late AudioPlayer audioPlayer =
+  static const MethodChannel _channel = MethodChannel('Scene_D2');
+  static AudioPlayer audioPlayerD2 =
       AudioPlayer(); // Create an instance of AudioPlayer
-  late AudioPlayer backgroundAudioPlayer =
+  static AudioPlayer backgroundAudioPlayerD2 =
       AudioPlayer(); // Audio player for the background track
   bool isPlaying = false;
   Duration audioPosition = Duration.zero;
@@ -55,20 +55,21 @@ class _SceneD2State extends State<SceneD2> {
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
     // Play the current audio track
     playAudio('hmong_dwab_audio/scene_2.m4a');
 
     // Play the background audio track and set it to loop continuously
     playBackgroundAudio('background_audio/scene_2.mp3');
-    backgroundAudioPlayer.setReleaseMode(ReleaseMode.loop);
+    backgroundAudioPlayerD2.setReleaseMode(ReleaseMode.loop);
 
-    audioPlayer.onDurationChanged.listen((Duration duration) {
+    audioPlayerD2.onDurationChanged.listen((Duration duration) {
       setState(() {
         audioDuration = duration.inMilliseconds; // Get the audio duration
       });
     });
 
-    audioPlayer.onPositionChanged.listen((Duration position) {
+    audioPlayerD2.onPositionChanged.listen((Duration position) {
       setState(() {
         audioPosition = position;
         updateTextColor();
@@ -76,17 +77,27 @@ class _SceneD2State extends State<SceneD2> {
     });
   }
 
+  // Call this method to pause or stop the music when the screen is locked.
+  Future<void> pauseMusicOnLockScreen() async {
+    try {
+      await _channel.invokeMethod('pauseMusic');
+    } on PlatformException catch (e) {
+      print('$e');
+      // Handle the error.
+    }
+  }
+
   // Function to play the current audio track
   Future<void> playAudio(String audioPath) async {
     if (isPlaying) {
-      audioPlayer.pause(); // Pause the audio
+      audioPlayerD2.pause(); // Pause the audio
       setState(() {
         isPlaying = false;
       });
     } else {
-      audioPlayer.seek(audioPosition);
-      await audioPlayer.resume(); // Resume the audio
-      await audioPlayer.play(
+      audioPlayerD2.seek(audioPosition);
+      await audioPlayerD2.resume(); // Resume the audio
+      await audioPlayerD2.play(
         AssetSource(audioPath),
       );
       setState(() {
@@ -101,17 +112,17 @@ class _SceneD2State extends State<SceneD2> {
     currentWordIndex = 0; // Reset the text highlight index
     updateTextColor(); // Update text color based on the reset values
     if (isPlaying) {
-      audioPlayer.pause(); // Pause the audio
-      await audioPlayer
+      audioPlayerD2.pause(); // Pause the audio
+      await audioPlayerD2
           .seek(const Duration(milliseconds: 0)); // Seek to the start
-      await audioPlayer.resume(); // Resume the audio
+      await audioPlayerD2.resume(); // Resume the audio
       setState(() {
         isPlaying = true;
       });
     } else {
-      await audioPlayer
+      await audioPlayerD2
           .seek(const Duration(milliseconds: 0)); // Seek to the start
-      await audioPlayer.play(
+      await audioPlayerD2.play(
         AssetSource(audioPath),
       );
       setState(() {
@@ -123,12 +134,12 @@ class _SceneD2State extends State<SceneD2> {
   // Function to play the background audio track
   Future<void> playBackgroundAudio(String backgroundAudioPath) async {
     if (isPlaying) {
-      backgroundAudioPlayer.pause();
+      backgroundAudioPlayerD2.pause();
       setState(() {
         isPlaying = false;
       });
     } else {
-      await backgroundAudioPlayer.play(
+      await backgroundAudioPlayerD2.play(
         AssetSource(backgroundAudioPath),
       );
       setState(() {
@@ -139,12 +150,13 @@ class _SceneD2State extends State<SceneD2> {
 
   // Function to stop the current audio track
   Future<void> stopAudio() async {
-    await audioPlayer.stop();
+    await audioPlayerD2.stop();
   }
 
   // Function to stop the background audio track
   Future<void> stopBackgroundAudio() async {
-    await backgroundAudioPlayer.stop();
+    await backgroundAudioPlayerD2.stop();
+    await backgroundAudioPlayerD2.release();
   }
 
   void updateTextColor() {
@@ -172,10 +184,22 @@ class _SceneD2State extends State<SceneD2> {
   }
 
   @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.paused) {
+      backgroundAudioPlayerD2.pause();
+      audioPlayerD2.pause();
+    } else if (state == AppLifecycleState.resumed) {
+      backgroundAudioPlayerD2.resume();
+      audioPlayerD2.resume();
+    }
+  }
+
+  @override
   void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
     // Dispose of the audioPlayer when the widget is disposed
-    audioPlayer.dispose();
-    backgroundAudioPlayer.dispose();
+    audioPlayerD2.dispose();
+    backgroundAudioPlayerD2.dispose();
     _gifControllerAxeBoy.dispose();
 
     _gifControllerPigGirl.dispose();
@@ -285,6 +309,7 @@ class _SceneD2State extends State<SceneD2> {
               onTap: () {
                 stopAudio();
                 stopBackgroundAudio(); // Stop the background audio track
+
                 Navigator.of(context).push(
                   MaterialPageRoute(
                     builder: (context) => const HomeScreen(),
@@ -306,6 +331,7 @@ class _SceneD2State extends State<SceneD2> {
               onTap: () {
                 stopAudio();
                 stopBackgroundAudio(); // Stop the background audio track
+
                 Navigator.of(context).push(
                   SlideRightPageRoute(
                     page: const SceneD3(),
@@ -327,6 +353,7 @@ class _SceneD2State extends State<SceneD2> {
               onTap: () {
                 stopAudio();
                 stopBackgroundAudio(); // Stop the background audio track
+
                 Navigator.of(context).push(
                   SlideRightPageRouteB(
                     page: const SceneD1(),

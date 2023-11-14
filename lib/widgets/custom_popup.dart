@@ -1,4 +1,4 @@
-// ignore_for_file: library_private_types_in_public_api
+// ignore_for_file: library_private_types_in_public_api, sized_box_for_whitespace
 
 import 'package:ebook/animations/forward_page_animation.dart';
 import 'package:ebook/screens/hmong_dwab/scene_1.dart';

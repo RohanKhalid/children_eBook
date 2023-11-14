@@ -17,10 +17,12 @@ class Scene1 extends StatefulWidget {
   _Scene1State createState() => _Scene1State();
 }
 
-class _Scene1State extends State<Scene1> {
-  AudioPlayer audioPlayer = AudioPlayer(); // Create an instance of AudioPlayer
-  AudioPlayer backgroundAudioPlayer =
+class _Scene1State extends State<Scene1> with WidgetsBindingObserver {
+  static AudioPlayer audioPlayer =
+      AudioPlayer(); // Create an instance of AudioPlayer
+  static AudioPlayer backgroundAudioPlayer =
       AudioPlayer(); // Audio player for the background track
+  static const MethodChannel _channel = MethodChannel('Scene_1');
   final GifController _gifControllerCowGirl = GifController();
   final GifController _gifControllerCow = GifController();
   bool isPlaying = false;
@@ -47,6 +49,7 @@ class _Scene1State extends State<Scene1> {
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
         overlays: [SystemUiOverlay.bottom]);
     // Play the current audio track
@@ -67,6 +70,16 @@ class _Scene1State extends State<Scene1> {
         updateTextColor();
       });
     });
+  }
+
+  // Call this method to pause or stop the music when the screen is locked.
+  Future<void> pauseMusicOnLockScreen() async {
+    try {
+      await _channel.invokeMethod('pauseMusic');
+    } on PlatformException catch (e) {
+      print('$e');
+      // Handle the error.
+    }
   }
 
   // Function to play the current audio track
@@ -131,13 +144,14 @@ class _Scene1State extends State<Scene1> {
   }
 
   // Function to stop the current audio track
-  stopAudio() {
-    audioPlayer.stop();
+  stopAudio() async {
+    await audioPlayer.stop();
   }
 
   // Function to stop the background audio track
-  stopBackgroundAudio() {
-    backgroundAudioPlayer.stop();
+  stopBackgroundAudio() async {
+    await backgroundAudioPlayer.stop();
+    await backgroundAudioPlayer.release();
   }
 
   void updateTextColor() {
@@ -165,7 +179,19 @@ class _Scene1State extends State<Scene1> {
   }
 
   @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.paused) {
+      backgroundAudioPlayer.pause();
+      audioPlayer.pause();
+    } else if (state == AppLifecycleState.resumed) {
+      backgroundAudioPlayer.resume();
+      audioPlayer.resume();
+    }
+  }
+
+  @override
   void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
     // Dispose of the audioPlayer when the widget is disposed
     audioPlayer.dispose();
     backgroundAudioPlayer.dispose();

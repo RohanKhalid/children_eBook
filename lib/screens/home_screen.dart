@@ -14,23 +14,36 @@ class HomeScreen extends StatefulWidget {
   _HomeScreenState createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
   bool isPlaying = false;
   bool isGifPlaying = true;
 
-  AudioPlayer backgroundAudioPlayer = AudioPlayer();
+  static AudioPlayer backgroundAudioPlayer = AudioPlayer();
 
   final GifController _gifControllerHen = GifController();
   final GifController _gifControllerBird = GifController();
   final GifController _gifControllerGirl = GifController();
 
+  static const MethodChannel _channel = MethodChannel('Music');
+
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
         overlays: [SystemUiOverlay.bottom]);
     playBackgroundAudio('background_audio/scene_intro.mp3');
     backgroundAudioPlayer.setReleaseMode(ReleaseMode.loop);
+  }
+
+  // Call this method to pause or stop the music when the screen is locked.
+  Future<void> pauseMusicOnLockScreen() async {
+    try {
+      await _channel.invokeMethod('pauseMusic');
+    } on PlatformException catch (e) {
+      print('$e');
+      // Handle the error.
+    }
   }
 
   // Function to play the background audio track
@@ -51,13 +64,24 @@ class _HomeScreenState extends State<HomeScreen> {
   // Function to stop the background audio track
   stopBackgroundAudio() {
     backgroundAudioPlayer.stop();
+    
     setState(() {
       isPlaying = false;
     });
   }
 
   @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.paused) {
+      backgroundAudioPlayer.pause();
+    } else if (state == AppLifecycleState.resumed) {
+      backgroundAudioPlayer.resume();
+    }
+  }
+
+  @override
   void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
     backgroundAudioPlayer.dispose();
     _gifControllerBird.dispose();
     _gifControllerGirl.dispose();
@@ -121,16 +145,14 @@ class _HomeScreenState extends State<HomeScreen> {
               left: screenHeight * 0.715,
               child: InkWell(
                 onTap: () {
-                  setState(() {
-                    stopBackgroundAudio();
-                  });
+                  stopBackgroundAudio();
+                  backgroundAudioPlayer.release();
                   showDialog(
                     context: context,
                     builder: (BuildContext context) {
                       return const CustomPopup(); // Show the custom popup
                     },
-                  ).then((_) =>
-                      playBackgroundAudio('background_audio/scene_intro.mp3'));
+                  );
                 },
                 child: const SizedBox(
                   height: 70,

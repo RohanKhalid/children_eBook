@@ -14,26 +14,36 @@ class SceneendD extends StatefulWidget {
   _SceneendDState createState() => _SceneendDState();
 }
 
-class _SceneendDState extends State<SceneendD> {
-  late AudioPlayer
-      backgroundAudioPlayer = AudioPlayer(); // Audio player for the background track
-  final GifController _gifControllerSceneEnd_1 = GifController();
-  final GifController _gifControllerSceneEnd_2 = GifController();
-  final GifController _gifControllerEnd_3 = GifController();
-  final GifController _gifControllerEnd_4 = GifController();
+class _SceneendDState extends State<SceneendD> with WidgetsBindingObserver {
+  late AudioPlayer backgroundAudioPlayer =
+      AudioPlayer(); // Audio player for the background track
+  static const MethodChannel _channel = MethodChannel('Scene_END');
+  static GifController _gifControllerSceneEnd_1 = GifController();
+  static GifController _gifControllerSceneEnd_2 = GifController();
+  static GifController _gifControllerEnd_3 = GifController();
+  static GifController _gifControllerEnd_4 = GifController();
 
   @override
   void initState() {
-    
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
     SystemChrome.setPreferredOrientations([DeviceOrientation.landscapeLeft]);
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
         overlays: [SystemUiOverlay.bottom]);
-    
 
     // Play the background audio track and set it to loop continuously
     playBackgroundAudio('background_audio/scene_end.mp3');
     backgroundAudioPlayer.setReleaseMode(ReleaseMode.loop);
+  }
+
+  // Call this method to pause or stop the music when the screen is locked.
+  Future<void> pauseMusicOnLockScreen() async {
+    try {
+      await _channel.invokeMethod('pauseMusic');
+    } on PlatformException catch (e) {
+      print('$e');
+      // Handle the error.
+    }
   }
 
   // Function to play the background audio track
@@ -46,10 +56,21 @@ class _SceneendDState extends State<SceneendD> {
   // Function to stop the background audio track
   Future<void> stopBackgroundAudio() async {
     await backgroundAudioPlayer.stop();
+    await backgroundAudioPlayer.release();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.paused) {
+      backgroundAudioPlayer.pause();
+    } else if (state == AppLifecycleState.resumed) {
+      backgroundAudioPlayer.resume();
+    }
   }
 
   @override
   void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
     // Dispose of the audioPlayer when the widget is disposed
     _gifControllerSceneEnd_1.dispose();
     _gifControllerSceneEnd_2.dispose();
@@ -129,6 +150,7 @@ class _SceneendDState extends State<SceneendD> {
             child: GestureDetector(
               onTap: () {
                 stopBackgroundAudio();
+
                 Navigator.of(context).push(
                   MaterialPageRoute(
                     builder: (context) => const HomeScreen(),
